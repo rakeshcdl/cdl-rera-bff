@@ -1,0 +1,15 @@
+${AnsiColor.CYAN}
+  ______  _____  _____  _____   ____   ____  _      __
+ |  ____|/ ____|/ ____|/ ____| |  _ \ / __ \| |    /_ |
+ | |__  | (___ | |    | |     | |_) | |  | | |     | |
+ |  __|  \___ \| |    | |     |  _ <| |  | | |     | |
+ | |____ ____) | |____| |____ | |_) | |__| | |____ | |
+ |______|_____/ \_____|\_____| |____/ \____/|______||_|
+
+${AnsiColor.YELLOW}:: ESCROW :: (${spring.application.version})
+${AnsiColor.GREEN}Java Version    : ${java.version}
+Running User     : ${user.name}
+OS               : ${os.name} ${os.version}
+Host             : ${HOSTNAME}
+Timezone         : ${user.timezone}
+${AnsiColor.DEFAULT}

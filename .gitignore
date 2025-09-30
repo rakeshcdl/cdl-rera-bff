@@ -1,0 +1,38 @@
+# Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Spring Boot specific
+application-*.yml
+application-*.properties
+!application.properties
+!application.yml
+
+# Build
+build/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp this is my file but still i can see the target file

@@ -1,0 +1,103 @@
+
+spring:
+  profiles:
+    active: dev
+  application:
+  name: escrow
+  flyway:
+    enabled: false
+  datasource:
+    url: jdbc:postgresql://103.181.200.143:5432/rera-cdl-dev?sslmode=disable
+    username: postgres
+    password: cdl@120813
+
+    hikari:
+      max-lifetime: 6000000
+      validation-timeout: 50000
+      connection-test-query: SELECT 1
+      test-on-borrow: true
+      test-while-idle: true
+      idle-timeout: 600000
+      keepalive-time: 600000
+      minimum-idle: 5
+      maximum-pool-size: 10
+      leak-detection-threshold: 600000
+      auto-commit: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+    properties:
+      hibernate:
+        naming:
+          # Use consistent naming strategy
+          physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        format_sql: true
+        SQL: INFO
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        type:
+          descriptor:
+            sql:
+              BasicBinder: INFO
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs
+    operations-sorter: alpha
+    tags-sorter: alpha
+server:
+  port: 8081
+  ssl:
+    enabled: false
+    key-store: classpath:keystore.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: tomcat
+    client-auth: none
+
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://103.181.200.143:8443/realms/cdl_rera
+          jwk-set-uri: https://103.181.200.143:8443/realms/cdl_rera/protocol/openid-connect/certs
+
+
+keycloak:
+  admin:
+    server-url: https://103.181.200.143:8443
+    realm: cdl_rera
+    client-id: webapiaccess
+    client-secret: LnW8I0srfX3QYlILMkqeGQT81kPVkbFp
+    grant-type: client_credentials
+    bearer-only: true
+    public-client: true
+    use-resource-role-mappings: false
+
+logging:
+  level:
+    root: INFO
+    com.cdl.escrow: DEBUG
+    org.hibernate.envers: WARN
+
+custom:
+  message: "Running in Default profile"
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health, metrics, prometheus, httptrace
+    endpoint:
+      health:
+        show-details: always
+    metrics:
+      enable:
+        all: true
