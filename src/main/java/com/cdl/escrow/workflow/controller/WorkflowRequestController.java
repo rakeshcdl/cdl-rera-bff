@@ -4,7 +4,6 @@ import com.cdl.escrow.exception.BadRequestAlertException;
 import com.cdl.escrow.helper.PaginationUtil;
 import com.cdl.escrow.workflow.criteria.WorkflowRequestCriteria;
 import com.cdl.escrow.workflow.criteriaservice.WorkflowRequestCriteriaService;
-import com.cdl.escrow.workflow.dto.MyEngagementDTO;
 import com.cdl.escrow.workflow.dto.WorkflowRequestDTO;
 import com.cdl.escrow.workflow.repository.WorkflowRequestRepository;
 import com.cdl.escrow.workflow.service.WorkflowRequestService;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -125,14 +123,5 @@ public class WorkflowRequestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(request);
     }
 
-
-    // My Engagements
-    @GetMapping("/engagements")
-    public ResponseEntity<Page<MyEngagementDTO>> getMyEngagements(
-            @RequestParam String userId,
-            @PageableDefault(size = 20) Pageable pageable) {
-        Page<MyEngagementDTO> page = workflowRequestService.getMyEngagements(userId, pageable);
-        return ResponseEntity.ok(page);
-    }
 
 }

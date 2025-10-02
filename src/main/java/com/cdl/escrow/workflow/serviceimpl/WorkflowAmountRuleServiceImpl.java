@@ -1,6 +1,8 @@
 package com.cdl.escrow.workflow.serviceimpl;
 
 import com.cdl.escrow.entity.WorkflowAmountRule;
+import com.cdl.escrow.entity.WorkflowDefinition;
+import com.cdl.escrow.entity.WorkflowStageTemplate;
 import com.cdl.escrow.exception.ApplicationConfigurationNotFoundException;
 import com.cdl.escrow.workflow.dto.WorkflowAmountRuleDTO;
 import com.cdl.escrow.workflow.mapper.WorkflowAmountRuleMapper;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -94,6 +97,11 @@ public class WorkflowAmountRuleServiceImpl implements WorkflowAmountRuleService 
                 .findFirst()
                 .map(mapper::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("No applicable rule for amount " + amount));
+    }
+
+    @Override
+    public List<WorkflowStageTemplate> getStagesForAmount(WorkflowDefinition workflowDefinition, BigDecimal amount) {
+        return List.of();
     }
 
 }

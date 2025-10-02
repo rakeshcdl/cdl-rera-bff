@@ -21,5 +21,4 @@ public interface WorkflowRequestService {
 
     WorkflowRequestDTO createRequest(WorkflowRequestDTO dto, String name);
 
-    Page<MyEngagementDTO> getMyEngagements(String userId, Pageable pageable);
 }
