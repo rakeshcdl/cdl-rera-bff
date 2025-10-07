@@ -36,5 +36,10 @@ public interface WorkflowRequestStageRepository
     // If you often need approvals eager-loaded, you can add:
     @EntityGraph(attributePaths = "workflowRequestStageApprovals")
     List<WorkflowRequestStage> findAllByWorkflowRequest_Id(Long requestId);
+
+    List<WorkflowRequestStage> findByKeycloakGroupInAndWorkflowRequest_ModuleName(List<String> userGroups, String moduleName);
+
+    List<WorkflowRequestStage> findByKeycloakGroupIn(List<String> userGroups);
+
 }
 

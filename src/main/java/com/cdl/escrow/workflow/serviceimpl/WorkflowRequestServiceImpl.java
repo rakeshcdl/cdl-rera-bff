@@ -166,7 +166,7 @@ public class WorkflowRequestServiceImpl implements WorkflowRequestService {
             if (stage.getStageOrder() == 1) {
                 stage.setTaskStatus(firstStageStatus);
             } else {
-                stage.setTaskStatus(otherStageStatus);
+                stage.setTaskStatus(firstStageStatus);
             }
 
             workflowRequestStageRepository.save(stage);

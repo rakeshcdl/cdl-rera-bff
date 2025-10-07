@@ -8,6 +8,8 @@ import com.cdl.escrow.enumeration.WorkflowDecision;
 import com.cdl.escrow.enumeration.WorkflowEvent;
 import com.cdl.escrow.exception.WorkflowException;
 import com.cdl.escrow.repository.TaskStatusRepository;
+import com.cdl.escrow.service.AuthAdminRoleService;
+import com.cdl.escrow.service.AuthAdminUserService;
 import com.cdl.escrow.workflow.repository.WorkflowRequestRepository;
 import com.cdl.escrow.workflow.repository.WorkflowRequestStageApprovalRepository;
 import com.cdl.escrow.workflow.repository.WorkflowRequestStageRepository;
@@ -16,6 +18,7 @@ import com.cdl.escrow.workflow.service.WorkflowRequestLogService;
 import com.cdl.escrow.workflow.service.WorkflowRuleEngineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.representations.idm.RoleRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
+public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
 
     private final WorkflowRequestStageRepository stageRepository;
 
@@ -42,16 +45,29 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
 
     private final TaskStatusRepository taskStatusRepository;
 
+    private final AuthAdminUserService authAdminUserService;
+
     @Override
     @Transactional
     public void executeStage(Long stageId, String userId,
-                             WorkflowDecision decision, String remarks) {
+                             WorkflowDecision decision, String remarks) throws Exception {
         WorkflowRequestStage stage = stageRepository.findById(stageId)
                 .orElseThrow(() -> new WorkflowException("Stage not found: " + stageId));
 
         WorkflowRequest request = stage.getWorkflowRequest();
 
-        // 🔹 Apply dynamic workflow rules before execution
+        // Fetch user roles for the userId (implement as per your user management)
+        List<String> userRoles = getUserRolesByUserId(userId);
+
+        System.out.println("userRoles::"+userRoles);
+        // Enforce restriction: If Maker approval pending or in progress,
+        // Checker or Admin cannot approve or reject
+        if (isMakerApprovalPendingOrInProgress(request) &&
+                (userRoles.contains("ROLE_CHECKER") || userRoles.contains("ROLE_ADMIN"))) {
+            throw new WorkflowException("Checker and Admin users cannot approve or reject while Maker approval is pending or in progress.");
+        }
+
+        // Apply dynamic workflow rules before execution
         workflowRuleEngineService.applyAmountRules(request);
 
         // Save decision
@@ -74,7 +90,7 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
         TaskStatus requestStatus = findTaskStatus(taskStatusList, "APPROVED", "WORKFLOW_COMPLETED","STAGE_COMPLETED");
         approval.setWorkflowRequestStage(stage);
         approval.setApproverUserId(userId);
-        //approval.setWorkflowDecision(decision);
+        // approval.setWorkflowDecision(decision); // Uncomment if decision stored
         approval.setTaskStatus(requestStatus);
         approval.setRemarks(remarks);
         approval.setDecidedAt(ZonedDateTime.now());
@@ -87,9 +103,7 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
         List<TaskStatus> taskStatusList = taskStatusRepository.findAll();
 
         TaskStatus requestStatus = findTaskStatus(taskStatusList, "REJECTED", "WORKFLOW_REJECTED","STAGE_REJECTED");
-        //  stage.setStatus(WorkflowStageStatus.REJECTED);
         stage.setCompletedAt(ZonedDateTime.now());
-        //request.setStatus(WorkflowRequestStatus.REJECTED);
         request.setTaskStatus(requestStatus);
 
         stageRepository.save(stage);
@@ -101,7 +115,7 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
         logService.logWorkflowEvent(request, String.valueOf(WorkflowEvent.WORKFLOW_REJECTED),
                 Map.of("message", "Workflow rejected at stage " + stage.getStageKey()));
 
-        // 🔹 Finalize module on rejection
+        // Finalize module on rejection
         finalizationService.finalizeWorkflow(request);
     }
 
@@ -117,7 +131,6 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
         logService.logDecision(request, stage, userId, decision, remarks);
 
         if (stage.getApprovalsObtained() >= stage.getRequiredApprovals()) {
-           // stage.setStatus(WorkflowStageStatus.APPROVED);
             stage.setTaskStatus(requestStatus);
             stage.setCompletedAt(ZonedDateTime.now());
             stageRepository.save(stage);
@@ -129,7 +142,7 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
         }
     }
 
-        private void autoProgressToNextStage(WorkflowRequest request, WorkflowRequestStage currentStage) {
+    private void autoProgressToNextStage(WorkflowRequest request, WorkflowRequestStage currentStage) {
         int nextOrder = currentStage.getStageOrder() + 1;
 
         WorkflowRequestStage nextStage = request.getWorkflowRequestStages().stream()
@@ -138,22 +151,60 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
                 .orElse(null);
 
         if (nextStage != null) {
-           // nextStage.setStatus(WorkflowStageStatus.IN_PROGRESS);
             nextStage.setStartedAt(ZonedDateTime.now());
             stageRepository.save(nextStage);
-
+            requestRepository.save(request);
             logService.logStageEvent(request, nextStage, String.valueOf(WorkflowEvent.STAGE_STARTED),
                     Map.of("stageKey", nextStage.getStageKey(), "stageOrder", nextStage.getStageOrder()));
         } else {
-           // request.setStatus(WorkflowRequestStatus.APPROVED);
             requestRepository.save(request);
 
             logService.logWorkflowEvent(request, String.valueOf(WorkflowEvent.WORKFLOW_COMPLETED),
                     Map.of("message", "Workflow completed successfully"));
-            // 🔹 Finalize module on approval
+
+            // Finalize module on approval
             finalizationService.finalizeWorkflow(request);
         }
     }
+
+    /**
+     * Helper: Check if Maker approval is pending or in progress
+     */
+    private boolean isMakerApprovalPendingOrInProgress(WorkflowRequest request) {
+        return request.getWorkflowRequestStages().stream().anyMatch(stage ->
+                "MAKER".equalsIgnoreCase(stage.getStageKey()) &&
+                        stage.getCompletedAt() == null && // Not completed
+                        stage.getTaskStatus() != null &&
+                        (
+                                "IN_PROGRESS".equalsIgnoreCase(stage.getTaskStatus().getCode()) ||
+                                        "PENDING".equalsIgnoreCase(stage.getTaskStatus().getCode())
+                        )
+        );
+    }
+
+    /**
+     * Helper: Find user roles by user ID (stub, implement with real logic)
+     */
+    private List<String> getUserRolesByUserId(String userId) throws Exception {
+        try {
+            List<RoleRepresentation> roles = authAdminUserService.findOneRole(userId);
+            if (roles == null || roles.isEmpty()) {
+                return Collections.emptyList();  // Return immutable empty list instead of mutable list
+            }
+
+            // Use a stream to map RoleRepresentation to role name and collect as a list
+            return roles.stream()
+                    .map(RoleRepresentation::getName)
+                    .filter(Objects::nonNull)
+                    .distinct()  // Avoid duplicate roles
+                    .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            log.error("Error fetching roles for userId {}: {}", userId, e.getMessage());
+            throw e;  // Propagate exception after logging
+        }
+    }
+
 
     /**
      * Helper: find TaskStatus by preferred codes (case-insensitive).
@@ -196,3 +247,4 @@ public class WorkflowExecutionServiceImpl  implements WorkflowExecutionService {
                 .orElse(null);
     }
 }
+

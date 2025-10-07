@@ -40,7 +40,7 @@ public class WorkflowQueueService {
      * 2. Stage is PENDING
      * 3. User has NOT already approved this stage
      */
-    @Transactional(readOnly = true)
+   /* @Transactional(readOnly = true)
     public List<WorkflowQueueItemDTO> getAwaitingActions(String userId, List<String> userGroups, String moduleName) {
         log.info("Getting awaiting actions for user: {}, groups: {}, module: {}", userId, userGroups, moduleName);
 
@@ -54,9 +54,57 @@ public class WorkflowQueueService {
                     .findByKeycloakGroupInAndCompletedAtIsNull(userGroups);
         }
 
+        System.out.println("pendingStages::"+ pendingStages);
         List<WorkflowQueueItemDTO> awaitingActions = new ArrayList<>();
 
         for (WorkflowRequestStage stage : pendingStages) {
+            // Check if user has already approved this stage
+            boolean alreadyApproved = approvalRepository
+                    .existsByWorkflowRequestStage_IdAndApproverUserId(stage.getId(), userId);
+            System.out.println("alreadyApproved::"+ alreadyApproved);
+            if (!alreadyApproved) {
+                WorkflowQueueItemDTO dto = mapToQueueItemDTO(stage);
+                dto.setPendingApprovals(stage.getRequiredApprovals() - stage.getApprovalsObtained());
+                awaitingActions.add(dto);
+            }
+        }
+
+        log.info("Found {} awaiting actions for user: {}", awaitingActions.size(), userId);
+        return awaitingActions;
+    }*/
+
+    @Transactional(readOnly = true)
+    public List<WorkflowQueueItemDTO> getAwaitingActions(String userId, List<String> userGroups, String moduleName) {
+        log.info("Getting awaiting actions for user: {}, groups: {}, module: {}", userId, userGroups, moduleName);
+
+        // This query finds stages that are:
+        // 1. In user's group (keycloakGroup IN :groups)
+        // 2. Have status = PENDING (only current active stage)
+        // 3. Not deleted
+        // 4. Parent workflow request not deleted
+        List<WorkflowRequestStage> pendingStages;
+
+        if (moduleName != null && !moduleName.isEmpty()) {
+            pendingStages = workflowRequestStageRepository
+                    .findByKeycloakGroupInAndWorkflowRequest_ModuleName(userGroups, moduleName);
+        } else {
+            pendingStages = workflowRequestStageRepository
+                    .findByKeycloakGroupIn(userGroups);
+        }
+
+        List<WorkflowQueueItemDTO> awaitingActions = new ArrayList<>();
+
+        for (WorkflowRequestStage stage : pendingStages) {
+            // Additional validation: Ensure this is the CURRENT stage of the workflow
+            WorkflowRequest request = stage.getWorkflowRequest();
+
+            // Double-check: Stage must be the current active stage
+            if (!stage.getStageOrder().equals(request.getCurrentStageOrder())) {
+                log.warn("Stage {} is PENDING but not current stage for request {}. Skipping.",
+                        stage.getId(), request.getId());
+                continue;
+            }
+
             // Check if user has already approved this stage
             boolean alreadyApproved = approvalRepository
                     .existsByWorkflowRequestStage_IdAndApproverUserId(stage.getId(), userId);

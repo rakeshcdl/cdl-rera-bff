@@ -4,5 +4,5 @@ import com.cdl.escrow.enumeration.WorkflowDecision;
 
 public interface WorkflowExecutionService {
 
-    void executeStage(Long stageId, String userId, WorkflowDecision decision, String remarks);
+    void executeStage(Long stageId, String userId, WorkflowDecision decision, String remarks) throws Exception;
 }

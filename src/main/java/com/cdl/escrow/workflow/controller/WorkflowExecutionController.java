@@ -18,7 +18,7 @@ public class WorkflowExecutionController {
     @PostMapping("/{stageId}/decision")
     public ResponseEntity<Void> decideStage(
             @PathVariable Long stageId,
-            @RequestBody StageActionRequest request) {
+            @RequestBody StageActionRequest request) throws Exception {
 
         workflowExecutionService.executeStage(stageId,
                 request.getUserId(),
