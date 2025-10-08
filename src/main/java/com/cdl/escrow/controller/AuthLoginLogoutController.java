@@ -8,10 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,16 +50,22 @@ public class AuthLoginLogoutController {
 
     private final ObjectMapper objectMapper;
 
+    // Build a RestTemplate with timeouts
+    private RestTemplate restTemplate() {
+        var factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setConnectTimeout(10_000);
+        factory.setReadTimeout(30_000);
+        return new RestTemplate(factory);
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginRequest) throws IOException, InterruptedException {
-        log.info("login called");
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+        log.info("login called for user {}", loginRequest.getUsername());
 
         String tokenUrl = serverUrl + "/realms/" + realm + "/protocol/openid-connect/token";
 
         Map<String, String> params = new HashMap<>();
         params.put("grant_type", "password");
-
-        // Use request values or fallback to config
         params.put("client_id", clientId);
         params.put("client_secret", clientSecret);
         params.put("username", loginRequest.getUsername());
@@ -79,19 +83,47 @@ public class AuthLoginLogoutController {
                 .POST(HttpRequest.BodyPublishers.ofString(formBody))
                 .build();
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() != 200) {
-            String errorMessage = String.format(
-                    "Login failed for user '%s' in realm '%s' with status code: %d and response: %s",
-                    loginRequest.getUsername(), realm, response.statusCode(), response.body()
-            );
-            throw new RuntimeException(errorMessage);
+            if (response.statusCode() == 200) {
+                // Successful login → return token response
+                AccessTokenResponse tokenResponse = objectMapper.readValue(response.body(), AccessTokenResponse.class);
+                return ResponseEntity.ok(tokenResponse);
+            } else {
+                // Try to parse Keycloak error
+                Map<String, Object> errorDetails = new HashMap<>();
+                try {
+                    errorDetails = objectMapper.readValue(response.body(), Map.class);
+                } catch (Exception ignored) {
+                    errorDetails.put("error", "invalid_request");
+                    errorDetails.put("error_description", "Unexpected error response");
+                }
+
+                // Build UI-friendly message
+                String description = (String) errorDetails.getOrDefault("error_description", "Login failed");
+                String errorCode = (String) errorDetails.getOrDefault("error", "login_failed");
+
+                Map<String, Object> uiError = new HashMap<>();
+                uiError.put("status", response.statusCode());
+                uiError.put("error", errorCode);
+                uiError.put("message", description);
+
+                return ResponseEntity
+                        .status(response.statusCode())
+                        .body(uiError);
+            }
+        } catch (Exception e) {
+            log.error("Error while calling Keycloak login API", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", 500);
+            errorResponse.put("error", "internal_error");
+            errorResponse.put("message", "Authentication service unavailable. Please try again later.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
-
-        return ResponseEntity.ok(objectMapper.readValue(response.body(), AccessTokenResponse.class));
     }
+
 
 
     @PostMapping("/logout")
