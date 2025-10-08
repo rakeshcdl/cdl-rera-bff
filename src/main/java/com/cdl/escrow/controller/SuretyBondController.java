@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,8 @@ public class SuretyBondController {
     private static final String ENTITY_NAME = "SURETY_BOND";
 
     @GetMapping
-    public ResponseEntity<Page<SuretyBondDTO>> getAllSuretyBondByCriteria(@ParameterObject SuretyBondCriteria criteria,
-                                                                                               @ParameterObject  Pageable pageable) {
+    public ResponseEntity<Page<SuretyBondDTO>> getAllSuretyBondByCriteria(@ParameterObject SuretyBondCriteria criteria, @ParameterObject
+    @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<SuretyBondDTO> page = suretyBondCriteriaService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page);
@@ -49,7 +50,8 @@ public class SuretyBondController {
 
     @GetMapping("/find-all")
     public ResponseEntity<Page<SuretyBondDTO>> getAllSuretyBond(
-            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
+             @ParameterObject
+              @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("Fetching all surety bond, page: {}", pageable.getPageNumber());
         Page<SuretyBondDTO> page = suretyBondService.getAllSuretyBond(pageable);
         return ResponseEntity.ok(page);

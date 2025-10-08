@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +42,8 @@ public class CapitalPartnerController {
     private static final String ENTITY_NAME = "CAPITAL_PARTNER";
 
     @GetMapping
-    public ResponseEntity<Page<CapitalPartnerDTO>> getAllCapitalPartnersByCriteria(@ParameterObject CapitalPartnerCriteria criteria,
-                                                                                                   @ParameterObject  Pageable pageable) {
+    public ResponseEntity<Page<CapitalPartnerDTO>> getAllCapitalPartnersByCriteria(@ParameterObject CapitalPartnerCriteria criteria, @ParameterObject
+    @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CapitalPartnerDTO> page = capitalPartnerCriteriaService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page);
@@ -50,7 +51,8 @@ public class CapitalPartnerController {
 
     @GetMapping("/find-all")
     public ResponseEntity<Page<CapitalPartnerDTO>> getAllCapitalPartners(
-            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
+             @ParameterObject
+              @PageableDefault( size = 20 , sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("Fetching all capital partner, page: {}", pageable.getPageNumber());
         Page<CapitalPartnerDTO> page = capitalPartnerService.getAllCapitalPartner(pageable);
         return ResponseEntity.ok(page);

@@ -53,7 +53,7 @@ public class RealEstateDocumentServiceImpl implements RealEstateDocumentService 
     private static final String FILE_STORAGE_KEY = "FILE_STORAGE_PATH"; // e.g. "/opt/escrow/files"
 
     // safety limits
-    private static final long MAX_FILE_SIZE = DataSize.ofMegabytes(25).toBytes();
+    //private static final long MAX_FILE_SIZE = DataSize.ofMegabytes(25).toBytes();
 
 
     // Allowed file extensions (lowercase)
@@ -129,9 +129,9 @@ public RealEstateDocument storeFile(MultipartFile file, String module, Long reco
     if (file == null || file.isEmpty()) {
         throw new IllegalArgumentException("File is required");
     }
-    if (file.getSize() > MAX_FILE_SIZE) {
+   /* if (file.getSize() > MAX_FILE_SIZE) {
         throw new IllegalArgumentException("File exceeds max size: " + MAX_FILE_SIZE + " bytes");
-    }
+    }*/
 
     // Module is stored in DB metadata only (we are saving under base root directly)
     String safeModule = sanitizeSimple(module);

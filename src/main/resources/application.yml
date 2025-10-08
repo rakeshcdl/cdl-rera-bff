@@ -6,6 +6,10 @@ spring:
   name: escrow
   flyway:
     enabled: false
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
   datasource:
     url: jdbc:postgresql://103.181.200.143:5432/rera-cdl-dev?sslmode=disable
     username: postgres

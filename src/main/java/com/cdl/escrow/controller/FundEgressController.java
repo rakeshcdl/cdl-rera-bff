@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,8 @@ public class FundEgressController {
     private static final String ENTITY_NAME = "FUND_EGRESS";
 
     @GetMapping
-    public ResponseEntity<Page<FundEgressDTO>> getAllFundEgressByCriteria(@ParameterObject FundEgressCriteria criteria,
-                                                                                              @ParameterObject  Pageable pageable) {
+    public ResponseEntity<Page<FundEgressDTO>> getAllFundEgressByCriteria(@ParameterObject FundEgressCriteria criteria, @ParameterObject
+    @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<FundEgressDTO> page = fundEgressCriteriaService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page);
@@ -46,7 +47,8 @@ public class FundEgressController {
 
     @GetMapping("/find-all")
     public ResponseEntity<Page<FundEgressDTO>> getAllFundEgress(
-            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
+             @ParameterObject
+              @PageableDefault( size = 20 ,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("Fetching all fund egress, page: {}", pageable.getPageNumber());
         Page<FundEgressDTO> page = fundEgressService.getAllFundEgress(pageable);
         return ResponseEntity.ok(page);

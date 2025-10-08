@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,8 @@ public class RealEstateAssestController {
     private static final String ENTITY_NAME = "REAL_ESTATE_ASSEST";
 
     @GetMapping
-    public ResponseEntity<List<RealEstateAssestDTO>> getAllRealEstateAssestByCriteria(@ParameterObject RealEstateAssestCriteria criteria,
-                                                                                                    @ParameterObject  Pageable pageable) {
+    public ResponseEntity<List<RealEstateAssestDTO>> getAllRealEstateAssestByCriteria(@ParameterObject RealEstateAssestCriteria criteria, @ParameterObject
+    @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<RealEstateAssestDTO> page = realEstateAssestCriteriaService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -49,7 +50,8 @@ public class RealEstateAssestController {
 
     @GetMapping("/find-all")
     public ResponseEntity<Page<RealEstateAssestDTO>> getAllRealEstateAssest(
-            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject
+              @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("Fetching all real estate assest, page: {}", pageable.getPageNumber());
         Page<RealEstateAssestDTO> page = realEstateAssestService.getAllRealEstateAssest(pageable);
         return ResponseEntity.ok(page);
