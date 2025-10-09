@@ -7,7 +7,7 @@ import com.cdl.escrow.helper.EntityMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = BuildPartnerMapper.class)
 public interface BuildPartnerAccountMapper extends EntityMapper<BuildPartnerAccountDTO, BuildPartnerAccount> {
 
     @Mapping(source = "buildPartner", target = "buildPartnerDTO")

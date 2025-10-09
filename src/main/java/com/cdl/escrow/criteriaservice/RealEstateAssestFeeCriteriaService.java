@@ -3,10 +3,15 @@ package com.cdl.escrow.criteriaservice;
 
 import com.cdl.escrow.criteria.RealEstateAssestFeeCriteria;
 import com.cdl.escrow.dto.RealEstateAssestFeeDTO;
+import com.cdl.escrow.entity.ApplicationSetting;
+import com.cdl.escrow.entity.BuildPartner;
+import com.cdl.escrow.entity.RealEstateAssest;
 import com.cdl.escrow.entity.RealEstateAssestFee;
 import com.cdl.escrow.filter.BaseSpecificationBuilder;
 import com.cdl.escrow.mapper.RealEstateAssestFeeMapper;
 import com.cdl.escrow.repository.RealEstateAssestFeeRepository;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,17 +50,32 @@ public class RealEstateAssestFeeCriteriaService extends BaseSpecificationBuilder
 
 
                 // Relation Join
+
                 if (criteria.getRealEstateAssestId() != null) {
-                    addLongFilterForJoin(cb, root, predicates, "realEstateAssest", "id", criteria.getRealEstateAssestId());
+                    Join<RealEstateAssestFee, RealEstateAssest> join = root.join("realEstateAssest", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getRealEstateAssestId());
                 }
+
+
                 if (criteria.getReafCategoryId() != null) {
-                    addLongFilterForJoin(cb, root, predicates, "reafCategory", "id", criteria.getReafCategoryId());
+                    Join<RealEstateAssestFee, ApplicationSetting> join = root.join("reafCategory", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReafCategoryId());
+
                 }
                 if (criteria.getReafCurrencyId() != null) {
-                    addLongFilterForJoin(cb, root, predicates, "reafCurrency", "id", criteria.getReafCurrencyId());
+                    Join<RealEstateAssestFee, ApplicationSetting> join = root.join("reafCurrency", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReafCurrencyId());
+
                 }
                 if (criteria.getReafFrequencyId() != null) {
-                    addLongFilterForJoin(cb, root, predicates, "reafFrequency", "id", criteria.getReafFrequencyId());
+                    Join<RealEstateAssestFee, ApplicationSetting> join = root.join("reafFrequency", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReafFrequencyId());
+
+                }
+
+                if (criteria.getReafAccountTypeId() != null) {
+                    Join<RealEstateAssestFee, ApplicationSetting> join = root.join("reafAccountType", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReafAccountTypeId());
                 }
 
 

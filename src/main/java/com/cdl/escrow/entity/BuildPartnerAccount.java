@@ -36,34 +36,27 @@ public class BuildPartnerAccount implements Serializable {
     )
     private Long id ;
 
-
-    @Column(nullable = false, length = 50)
     private String accountType; // TRUST, RETENTION, SUB_CONSTRUCTION, CORPORATE
 
-    @Column(nullable = false, unique = true, length = 50)
     private String accountNumber;
 
-    @Column(nullable = false, unique = true, length = 50)
     private String ibanNumber;
 
-    @Column(nullable = false)
     private ZonedDateTime dateOpened;
 
-    @Column(length = 255)
     private String accountTitle;
 
-    @Column(nullable = false, length = 10)
     private String currencyCode;
 
-    private Boolean isValidated = Boolean.FALSE;
+    private Boolean isValidated ;
+
     private Boolean enabled ;
 
     private Boolean deleted;
-    @Column(nullable = false, updatable = false)
+
     private ZonedDateTime createdAt = ZonedDateTime.now();
 
     private ZonedDateTime updatedAt = ZonedDateTime.now();
-
 
     @ManyToOne
     @JsonIgnore

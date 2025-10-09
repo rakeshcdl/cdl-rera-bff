@@ -44,7 +44,7 @@ public class WorkflowDefinition implements Serializable {
     @ManyToOne
     private WorkflowAction workflowAction;
 
-    private Integer version = 1;
+    private Integer version ;
 
     private Boolean isActive ;
 

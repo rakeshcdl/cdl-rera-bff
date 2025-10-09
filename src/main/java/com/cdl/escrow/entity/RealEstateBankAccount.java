@@ -40,23 +40,17 @@ public class RealEstateBankAccount implements Serializable {
 
     private String accountType; // TRUST, RETENTION, SUB_CONSTRUCTION, CORPORATE
 
-
     private String accountNumber;
-
 
     private String ibanNumber;
 
-
     private ZonedDateTime dateOpened;
-
 
     private String accountTitle;
 
-
     private String currencyCode;
 
-    private Boolean isValidated = Boolean.FALSE;
-
+    private Boolean isValidated;
 
     private ZonedDateTime createdAt = ZonedDateTime.now();
 

@@ -21,5 +21,6 @@ public interface RealEstateAssestFeeMapper extends EntityMapper<RealEstateAssest
     @Mapping(source = "reafCategoryDTO", target = "reafCategory")
     @Mapping(source = "reafCurrencyDTO", target = "reafCurrency")
     @Mapping(source = "reafAccountTypeDTO", target = "reafAccountType")
+    @Mapping(source = "reafFrequencyDTO", target = "reafFrequency")
     RealEstateAssestFee toEntity(RealEstateAssestFeeDTO realEstateAssestFeeDTO);
 }

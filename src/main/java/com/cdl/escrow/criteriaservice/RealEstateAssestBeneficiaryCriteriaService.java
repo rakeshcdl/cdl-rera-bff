@@ -3,6 +3,7 @@ package com.cdl.escrow.criteriaservice;
 
 import com.cdl.escrow.criteria.RealEstateAssestBeneficiaryCriteria;
 import com.cdl.escrow.dto.RealEstateAssestBeneficiaryDTO;
+import com.cdl.escrow.entity.ApplicationSetting;
 import com.cdl.escrow.entity.RealEstateAssest;
 import com.cdl.escrow.entity.RealEstateAssestBeneficiary;
 import com.cdl.escrow.filter.BaseSpecificationBuilder;
@@ -52,18 +53,51 @@ public class RealEstateAssestBeneficiaryCriteriaService  extends BaseSpecificati
                 addStringFilter(cb, root, predicates, "reabBankAddress", criteria.getReabBankAddress(), true);
                 addBooleanFilter(cb, root, predicates, "reabIsActive", criteria.getReabIsActive());
                 addBooleanFilter(cb, root, predicates, "reabIsDeleted", criteria.getReabIsDeleted());
-                addLongFilter(cb, root, predicates, "reabTranferTypeId", criteria.getReabTranferTypeId());
-                addLongFilter(cb, root, predicates, "reabExpenseTypeId", criteria.getReabExpenseTypeId());
-                addLongFilter(cb, root, predicates, "reabVendorSubTypeId", criteria.getReabVendorSubTypeId());
-                addLongFilter(cb, root, predicates, "reabContractorSubTypeId", criteria.getReabContractorSubTypeId());
-                addLongFilter(cb, root, predicates, "reabInfrastructureCategoryId", criteria.getReabInfrastructureCategoryId());
-                addLongFilter(cb, root, predicates, "reabSalesCategoryId", criteria.getReabSalesCategoryId());
+
+
+               // addLongFilter(cb, root, predicates, "reabTranferTypeId", criteria.getReabTranferTypeId());
+               // addLongFilter(cb, root, predicates, "reabExpenseTypeId", criteria.getReabExpenseTypeId());
+              //  addLongFilter(cb, root, predicates, "reabVendorSubTypeId", criteria.getReabVendorSubTypeId());
+                //addLongFilter(cb, root, predicates, "reabContractorSubTypeId", criteria.getReabContractorSubTypeId());
+              //  addLongFilter(cb, root, predicates, "reabInfrastructureCategoryId", criteria.getReabInfrastructureCategoryId());
+             //   addLongFilter(cb, root, predicates, "reabSalesCategoryId", criteria.getReabSalesCategoryId());
 
 
                 // Filter by CapitalPartner id -> join the capitalPartners collection
+
                 if (criteria.getRealEstateAssestId() != null) {
                     Join<RealEstateAssestBeneficiary, RealEstateAssest> join = root.join("realEstateAssests", JoinType.LEFT);
                     addLongFilterOnJoin(cb, join, predicates, "id", criteria.getRealEstateAssestId());
+                }
+
+                if (criteria.getReabSalesCategoryId() != null) {
+                    Join<RealEstateAssestBeneficiary, ApplicationSetting> join = root.join("reabSalesCategoryId", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReabSalesCategoryId());
+                }
+
+                if (criteria.getReabInfrastructureCategoryId() != null) {
+                    Join<RealEstateAssestBeneficiary, ApplicationSetting> join = root.join("reabInfrastructureCategory", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReabInfrastructureCategoryId());
+                }
+
+                if (criteria.getReabTranferTypeId() != null) {
+                    Join<RealEstateAssestBeneficiary, ApplicationSetting> join = root.join("reabTranferType", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReabTranferTypeId());
+                }
+
+                if (criteria.getReabExpenseTypeId() != null) {
+                    Join<RealEstateAssestBeneficiary, ApplicationSetting> join = root.join("reabExpenseType", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReabExpenseTypeId());
+                }
+
+                if (criteria.getReabVendorSubTypeId() != null) {
+                    Join<RealEstateAssestBeneficiary, ApplicationSetting> join = root.join("reabVendorSubType", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReabVendorSubTypeId());
+                }
+
+                if (criteria.getReabContractorSubTypeId() != null) {
+                    Join<RealEstateAssestBeneficiary, ApplicationSetting> join = root.join("reabContractorSubType", JoinType.LEFT);
+                    addLongFilterOnJoin(cb, join, predicates, "id", criteria.getReabContractorSubTypeId());
                 }
             }
 
