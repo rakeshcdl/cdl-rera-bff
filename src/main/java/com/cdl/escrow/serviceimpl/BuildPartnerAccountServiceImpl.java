@@ -51,6 +51,8 @@ public class BuildPartnerAccountServiceImpl implements BuildPartnerAccountServic
     public BuildPartnerAccountDTO saveBuildPartnerAccount(BuildPartnerAccountDTO buildPartnerAccountDTO) {
         log.info("Saving new build partner account");
         BuildPartnerAccount entity = mapper.toEntity(buildPartnerAccountDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         BuildPartnerAccount saved = repository.save(entity);
         return mapper.toDto(saved);
     }

@@ -63,6 +63,8 @@ public class CapitalPartnerUnitServiceImpl implements CapitalPartnerUnitService 
     public CapitalPartnerUnitDTO saveCapitalPartnerUnit(CapitalPartnerUnitDTO dto) {
         log.info("Saving new capital partner unit");
         CapitalPartnerUnit unit = mapper.toEntity(dto);
+        unit.setDeleted(false);
+        unit.setEnabled(true);
         CapitalPartnerUnit savedUnit = repository.save(unit);
 
         // 3. If DTO has capitalPartnerDTOS, update owning side

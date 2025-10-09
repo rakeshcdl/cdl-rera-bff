@@ -52,6 +52,8 @@ public class SuretyBondRecoveryServiceImpl implements SuretyBondRecoveryService 
     public SuretyBondRecoveryDTO saveSuretyBondRecovery(SuretyBondRecoveryDTO suretyBondRecoveryDTO) {
         log.info("Saving new Surety Bond Recovery");
         SuretyBondRecovery entity = mapper.toEntity(suretyBondRecoveryDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         SuretyBondRecovery saved = repository.save(entity);
         return mapper.toDto(saved);
     }

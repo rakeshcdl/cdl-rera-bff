@@ -71,6 +71,8 @@ public class BuildPartnerBeneficiaryServiceImpl implements BuildPartnerBeneficia
 
         // Step 1: Save the main entity without associations
         BuildPartnerBeneficiary entity = mapper.toEntity(buildPartnerBeneficiaryDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         entity.setBuildPartners(new HashSet<>()); // Clear associations temporarily
         BuildPartnerBeneficiary saved = repository.save(entity);
 

@@ -66,10 +66,7 @@ public class RealEstateAssestServiceImpl implements RealEstateAssestService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "TaskStatus not found: " + "IN_PROGRESS"));
         entity.setTaskStatus(ts);
-
-        // set any default flags if needed
         entity.setDeleted(false);
-        // entity.setEnabled(true/false) as per business rule
         entity.setEnabled(true);
 
         RealEstateAssest saved = repository.save(entity);

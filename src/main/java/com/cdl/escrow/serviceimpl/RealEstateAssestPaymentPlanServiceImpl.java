@@ -52,6 +52,8 @@ public class RealEstateAssestPaymentPlanServiceImpl implements RealEstateAssestP
     public RealEstateAssestPaymentPlanDTO saveRealEstateAssestPaymentPlan(RealEstateAssestPaymentPlanDTO realEstateAssestPaymentPlanDTO) {
         log.info("Saving new Real Estate Assest Payment Plan");
         RealEstateAssestPaymentPlan entity = mapper.toEntity(realEstateAssestPaymentPlanDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         RealEstateAssestPaymentPlan saved = repository.save(entity);
         return mapper.toDto(saved);
     }

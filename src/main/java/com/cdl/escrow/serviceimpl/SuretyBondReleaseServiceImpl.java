@@ -53,6 +53,8 @@ public class SuretyBondReleaseServiceImpl implements SuretyBondReleaseService {
     public SuretyBondReleaseDTO saveSuretyBondRelease(SuretyBondReleaseDTO suretyBondReleaseDTO) {
         log.info("Saving new Surety Bond Releaser");
         SuretyBondRelease entity = mapper.toEntity(suretyBondReleaseDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         SuretyBondRelease saved = repository.save(entity);
         return mapper.toDto(saved);
     }

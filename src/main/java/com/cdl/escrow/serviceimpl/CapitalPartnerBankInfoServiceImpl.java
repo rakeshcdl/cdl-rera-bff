@@ -53,6 +53,8 @@ public class CapitalPartnerBankInfoServiceImpl implements CapitalPartnerBankInfo
     public CapitalPartnerBankInfoDTO saveCapitalPartnerBankInfo(CapitalPartnerBankInfoDTO capitalPartnerBankInfoDTO) {
         log.info("Saving new capital partner bank info");
         CapitalPartnerBankInfo entity = mapper.toEntity(capitalPartnerBankInfoDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         CapitalPartnerBankInfo saved = repository.save(entity);
         return mapper.toDto(saved);
     }

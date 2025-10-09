@@ -54,6 +54,8 @@ public class CapitalPartnerUnitTypeServiceImpl implements CapitalPartnerUnitType
     public CapitalPartnerUnitTypeDTO saveCapitalPartnerUnitType(CapitalPartnerUnitTypeDTO capitalPartnerUnitTypeDTO) {
         log.info("Saving new capital partner unit type");
         CapitalPartnerUnitType entity = mapper.toEntity(capitalPartnerUnitTypeDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         CapitalPartnerUnitType saved = repository.save(entity);
         return mapper.toDto(saved);
     }

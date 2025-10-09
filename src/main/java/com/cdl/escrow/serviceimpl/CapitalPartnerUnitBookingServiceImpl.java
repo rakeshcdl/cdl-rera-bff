@@ -64,6 +64,8 @@ public class CapitalPartnerUnitBookingServiceImpl implements CapitalPartnerUnitB
 
 
         CapitalPartnerUnitBooking unit = mapper.toEntity(dto);
+        unit.setDeleted(false);
+        unit.setEnabled(true);
         CapitalPartnerUnitBooking savedUnit = repository.save(unit);
 
         // 3. If DTO has capitalPartnerDTOS, update owning side

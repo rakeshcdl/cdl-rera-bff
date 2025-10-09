@@ -53,6 +53,8 @@ public class BuildPartnerFeesServiceImpl implements BuildPartnerFeesService {
     public BuildPartnerFeesDTO saveBuildPartnerFees(BuildPartnerFeesDTO buildPartnerFeesDTO) {
         log.info("Saving new build partner fees");
         BuildPartnerFees entity = mapper.toEntity(buildPartnerFeesDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         BuildPartnerFees saved = repository.save(entity);
         return mapper.toDto(saved);
     }

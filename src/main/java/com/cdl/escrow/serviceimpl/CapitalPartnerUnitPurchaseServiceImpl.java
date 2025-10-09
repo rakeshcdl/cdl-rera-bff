@@ -53,6 +53,8 @@ public class CapitalPartnerUnitPurchaseServiceImpl implements CapitalPartnerUnit
     public CapitalPartnerUnitPurchaseDTO saveCapitalPartnerUnitPurchase(CapitalPartnerUnitPurchaseDTO capitalPartnerUnitPurchaseDTO) {
         log.info("Saving new capital partner unit purchase");
         CapitalPartnerUnitPurchase entity = mapper.toEntity(capitalPartnerUnitPurchaseDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         CapitalPartnerUnitPurchase saved = repository.save(entity);
         return mapper.toDto(saved);
     }

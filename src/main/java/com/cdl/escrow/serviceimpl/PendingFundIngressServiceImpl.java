@@ -67,6 +67,8 @@ public class PendingFundIngressServiceImpl implements PendingFundIngressService 
     public PendingFundIngressDTO savePendingFundIngress(PendingFundIngressDTO pendingFundIngressDTO) {
         log.info("Saving new Pending Fund Egress");
         PendingFundIngress entity = mapper.toEntity(pendingFundIngressDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         PendingFundIngress saved = repository.save(entity);
         return mapper.toDto(saved);
     }

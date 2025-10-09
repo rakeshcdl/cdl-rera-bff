@@ -76,6 +76,8 @@ public class RealEstateAssestBeneficiaryServiceImpl implements RealEstateAssestB
         // Step 1: Save the main entity without associations
         RealEstateAssestBeneficiary entity = mapper.toEntity(realEstateAssestBeneficiaryDTO);
         entity.setRealEstateAssests(new HashSet<>()); // Clear associations temporarily
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         RealEstateAssestBeneficiary saved = repository.save(entity);
 
         // Step 2: Add associations and save again

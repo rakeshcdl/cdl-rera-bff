@@ -53,6 +53,8 @@ public class SuretyBondTypeServiceImpl implements SuretyBondTypeService {
     public SuretyBondTypeDTO saveSuretyBondType(SuretyBondTypeDTO suretyBondTypeDTO) {
         log.info("Saving new Surety Bond Type");
         SuretyBondType entity = mapper.toEntity(suretyBondTypeDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         SuretyBondType saved = repository.save(entity);
         return mapper.toDto(saved);
     }

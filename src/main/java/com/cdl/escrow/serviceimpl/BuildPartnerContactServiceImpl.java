@@ -54,6 +54,8 @@ public class BuildPartnerContactServiceImpl implements BuildPartnerContactServic
     public BuildPartnerContactDTO saveBuildPartnerContact(BuildPartnerContactDTO buildPartnerContactDTO) {
         log.info("Saving new build partner contact");
         BuildPartnerContact entity = mapper.toEntity(buildPartnerContactDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         BuildPartnerContact saved = repository.save(entity);
         return mapper.toDto(saved);
     }

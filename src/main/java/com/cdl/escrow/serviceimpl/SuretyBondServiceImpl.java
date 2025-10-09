@@ -64,10 +64,7 @@ public class SuretyBondServiceImpl implements SuretyBondService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "TaskStatus not found: " + "IN_PROGRESS"));
         entity.setTaskStatus(ts);
-
-        // set any default flags if needed
         entity.setDeleted(false);
-        // entity.setEnabled(true/false) as per business rule
         entity.setEnabled(true);
 
         SuretyBond saved = repository.save(entity);

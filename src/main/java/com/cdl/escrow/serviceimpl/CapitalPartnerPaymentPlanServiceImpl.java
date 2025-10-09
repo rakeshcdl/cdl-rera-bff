@@ -51,6 +51,8 @@ public class CapitalPartnerPaymentPlanServiceImpl  implements CapitalPartnerPaym
     public CapitalPartnerPaymentPlanDTO saveCapitalPartnerPaymentPlan(CapitalPartnerPaymentPlanDTO capitalPartnerPaymentPlanDTO) {
         log.info("Saving new Real Estate Assest Payment Plan");
         CapitalPartnerPaymentPlan entity = mapper.toEntity(capitalPartnerPaymentPlanDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         CapitalPartnerPaymentPlan saved = repository.save(entity);
         return mapper.toDto(saved);
     }

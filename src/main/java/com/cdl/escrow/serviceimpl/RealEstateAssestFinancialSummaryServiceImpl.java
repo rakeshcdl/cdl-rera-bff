@@ -53,6 +53,8 @@ public class RealEstateAssestFinancialSummaryServiceImpl implements RealEstateAs
     public RealEstateAssestFinancialSummaryDTO saveRealEstateAssestFinancialSummary(RealEstateAssestFinancialSummaryDTO realEstateAssestFinancialSummaryDTO) {
         log.info("Saving new Real EstateAssest financial summary");
         RealEstateAssestFinancialSummary entity = mapper.toEntity(realEstateAssestFinancialSummaryDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         RealEstateAssestFinancialSummary saved = repository.save(entity);
         return mapper.toDto(saved);
     }

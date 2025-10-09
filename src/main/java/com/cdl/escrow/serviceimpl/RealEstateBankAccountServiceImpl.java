@@ -53,6 +53,8 @@ public class RealEstateBankAccountServiceImpl implements RealEstateBankAccountSe
     public RealEstateBankAccountDTO saveRealEstateBankAccount(RealEstateBankAccountDTO realEstateBankAccountDTO) {
         log.info("Saving new Real EstateAssest bank account");
         RealEstateBankAccount entity = mapper.toEntity(realEstateBankAccountDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         RealEstateBankAccount saved = repository.save(entity);
         return mapper.toDto(saved);
     }

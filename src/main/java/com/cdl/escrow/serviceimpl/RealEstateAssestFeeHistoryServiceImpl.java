@@ -53,6 +53,8 @@ public class RealEstateAssestFeeHistoryServiceImpl implements RealEstateAssestFe
     public RealEstateAssestFeeHistoryDTO saveRealEstateAssestFeeHistory(RealEstateAssestFeeHistoryDTO realEstateAssestFeeHistoryDTO) {
         log.info("Saving new Real EstateAssest fee history");
         RealEstateAssestFeeHistory entity = mapper.toEntity(realEstateAssestFeeHistoryDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         RealEstateAssestFeeHistory saved = repository.save(entity);
         return mapper.toDto(saved);
     }

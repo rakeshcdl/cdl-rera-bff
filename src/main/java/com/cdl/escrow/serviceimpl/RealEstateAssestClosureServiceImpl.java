@@ -54,6 +54,8 @@ public class RealEstateAssestClosureServiceImpl implements RealEstateAssestClosu
     public RealEstateAssestClosureDTO saveRealEstateAssestClosure(RealEstateAssestClosureDTO realEstateAssestClosureDTO) {
         log.info("Saving new Real EstateAssest closure");
         RealEstateAssestClosure entity = mapper.toEntity(realEstateAssestClosureDTO);
+        entity.setDeleted(false);
+        entity.setEnabled(true);
         RealEstateAssestClosure saved = repository.save(entity);
         return mapper.toDto(saved);
     }
