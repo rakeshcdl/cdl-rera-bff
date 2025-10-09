@@ -93,9 +93,13 @@ public class BuildPartnerContactServiceImpl implements BuildPartnerContactServic
     @Transactional
     public boolean softBuildPartnerContactServiceById(Long id) {
         return repository.findByIdAndDeletedFalse(id).map(entity -> {
-            entity.setDeleted(true);
-            repository.save(entity);
-            return true;
+            // treat null as false
+            if (Boolean.FALSE.equals(entity.getDeleted()) || entity.getDeleted() == null) {
+                entity.setDeleted(true);
+                repository.save(entity);
+                return true;
+            }
+            return false;
         }).orElse(false);
     }
 }

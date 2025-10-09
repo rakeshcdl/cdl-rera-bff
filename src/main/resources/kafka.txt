@@ -1,0 +1,34 @@
+ kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false     # cleaner payloads
+      retries: 5
+      acks: all
+      compression-type: lz4                     # optional
+    consumer:
+      group-id: cdl-rera-escrow-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"       # or your.model.package
+      auto-offset-reset: earliest
+      enable-auto-commit: false                 # we’ll use manual acks
+    listener:
+      ack-mode: manual                          # manual commit for reliability
+      concurrency: 3                            # number of consumer threads
+  #  properties:
+   #   security.protocol: SASL_SSL
+   #   sasl.mechanism: PLAIN
+      #sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required \
+      #  username="yourUser" password="yourPass";
+      #ssl:
+      #  trust-store-location: classpath:truststore.jks
+       # trust-store-password: changeit
+
+  # Optional: create topics at startup (or use AdminClient below)
+app:
+  kafka:
+    topic: cdl-rera-escrow-events
