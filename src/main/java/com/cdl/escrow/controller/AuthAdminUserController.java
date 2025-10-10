@@ -11,6 +11,7 @@ import org.keycloak.representations.idm.*;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class AuthAdminUserController {
     }
 
     @GetMapping("/auth/users")
-    public ResponseEntity<List<UserRepresentation>> getUsersOfRealm(Pageable pageable) throws Exception {
+    public ResponseEntity<List<UserRepresentation>> getUsersOfRealm(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
         Page<UserRepresentation> users;
         try {
             users = authAdminUserService.findAll(pageable);
