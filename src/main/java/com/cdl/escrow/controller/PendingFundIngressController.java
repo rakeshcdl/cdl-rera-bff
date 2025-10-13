@@ -155,8 +155,8 @@ public class PendingFundIngressController {
         }
 
         String currentUserName = principal.getName();
-        pendingFundIngressExtDTO.getWorkflowRequestDTO().setCreatedBy(currentUserName);
-        pendingFundIngressExtDTO.getWorkflowRequestDTO().setReferenceId(pendingFundIngressExtDTO.getId().toString());
+       // pendingFundIngressExtDTO.getWorkflowRequestDTO().setCreatedBy(currentUserName);
+       // pendingFundIngressExtDTO.getWorkflowRequestDTO().setReferenceId(pendingFundIngressExtDTO.getId().toString());
 
         PendingFundIngressExtDTO result = pendingFundIngressService.updateSplitData(pendingFundIngressExtDTO);
         return ResponseEntity.ok(result);

@@ -15,5 +15,5 @@ public class PendingFundIngressExtDTO extends PendingFundIngressDTO{
 
     private Set<SplitDataDTO> splitData = new HashSet<>();
 
-    private WorkflowRequestDTO workflowRequestDTO = new WorkflowRequestDTO();
+   // private WorkflowRequestDTO workflowRequestDTO = new WorkflowRequestDTO();
 }

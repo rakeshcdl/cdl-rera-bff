@@ -77,11 +77,6 @@ public class WorkflowQueueService {
     public List<WorkflowQueueItemDTO> getAwaitingActions(String userId, List<String> userGroups, String moduleName) {
         log.info("Getting awaiting actions for user: {}, groups: {}, module: {}", userId, userGroups, moduleName);
 
-        // This query finds stages that are:
-        // 1. In user's group (keycloakGroup IN :groups)
-        // 2. Have status = PENDING (only current active stage)
-        // 3. Not deleted
-        // 4. Parent workflow request not deleted
         List<WorkflowRequestStage> pendingStages;
 
         if (moduleName != null && !moduleName.isEmpty()) {

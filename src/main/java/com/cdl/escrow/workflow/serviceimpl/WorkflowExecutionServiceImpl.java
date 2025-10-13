@@ -149,10 +149,11 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
                 .filter(s -> s.getStageOrder() == nextOrder)
                 .findFirst()
                 .orElse(null);
-
+        request.setCurrentStageOrder(nextOrder);
         if (nextStage != null) {
             nextStage.setStartedAt(ZonedDateTime.now());
             stageRepository.save(nextStage);
+
             requestRepository.save(request);
             logService.logStageEvent(request, nextStage, String.valueOf(WorkflowEvent.STAGE_STARTED),
                     Map.of("stageKey", nextStage.getStageKey(), "stageOrder", nextStage.getStageOrder()));

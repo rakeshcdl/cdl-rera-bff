@@ -109,5 +109,6 @@ public class PendingFundIngressDTO implements Serializable {
     private Boolean deleted ;
 
     private boolean enabled ;
+
     private TaskStatusDTO taskStatusDTO;
 }
