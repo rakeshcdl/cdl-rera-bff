@@ -41,11 +41,11 @@ public class RealEstateAssestController {
     private static final String ENTITY_NAME = "REAL_ESTATE_ASSEST";
 
     @GetMapping
-    public ResponseEntity<List<RealEstateAssestDTO>> getAllRealEstateAssestByCriteria(@ParameterObject RealEstateAssestCriteria criteria, @ParameterObject
+    public ResponseEntity<Page<RealEstateAssestDTO>> getAllRealEstateAssestByCriteria(@ParameterObject RealEstateAssestCriteria criteria, @ParameterObject
     @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<RealEstateAssestDTO> page = realEstateAssestCriteriaService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return ResponseEntity.ok().headers(headers).body(page);
     }
 
     @GetMapping("/find-all")

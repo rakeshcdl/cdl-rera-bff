@@ -41,11 +41,11 @@ public class BuildPartnerController {
     private static final String ENTITY_NAME = "BUILD_PARTNER";
 
     @GetMapping
-    public ResponseEntity<List<BuildPartnerDTO>> getAllBuildPartnersByCriteria(@ParameterObject BuildPartnerCriteria criteria, @ParameterObject
+    public ResponseEntity<Page<BuildPartnerDTO>> getAllBuildPartnersByCriteria(@ParameterObject BuildPartnerCriteria criteria, @ParameterObject
     @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<BuildPartnerDTO> page = buildPartnerCriteriaService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return ResponseEntity.ok().headers(headers).body(page);
     }
 
     @GetMapping("/find-all")

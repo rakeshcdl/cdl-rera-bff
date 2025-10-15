@@ -87,7 +87,7 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
         List<TaskStatus> taskStatusList = taskStatusRepository.findAll();
 
         WorkflowRequestStageApproval approval = new WorkflowRequestStageApproval();
-        TaskStatus requestStatus = findTaskStatus(taskStatusList, "APPROVED", "WORKFLOW_COMPLETED","STAGE_COMPLETED");
+        TaskStatus requestStatus = findTaskStatus(taskStatusList, "APPROVED", "WORKFLOW_COMPLETE","STAGE_COMPLETE");
         approval.setWorkflowRequestStage(stage);
         approval.setApproverUserId(userId);
         // approval.setWorkflowDecision(decision); // Uncomment if decision stored
@@ -123,7 +123,7 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
                                 String userId, WorkflowDecision decision, String remarks) {
         List<TaskStatus> taskStatusList = taskStatusRepository.findAll();
 
-        TaskStatus requestStatus = findTaskStatus(taskStatusList, "APPROVED", "WORKFLOW_COMPLETED","STAGE_COMPLETED");
+        TaskStatus requestStatus = findTaskStatus(taskStatusList, "APPROVED", "WORKFLOW_COMPLETE","STAGE_COMPLETE");
 
         stage.setApprovalsObtained(stage.getApprovalsObtained() + 1);
         stageRepository.save(stage);

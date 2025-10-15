@@ -131,7 +131,7 @@ public class WorkflowRequestServiceImpl implements WorkflowRequestService {
         }
         // Final fallback to any available status to avoid nulls (optional)
         if (requestStatus == null && !taskStatusList.isEmpty()) {
-            requestStatus = taskStatusList.get(0);
+            requestStatus = taskStatusList.getFirst();
         }
 
         request.setTaskStatus(requestStatus);
@@ -175,7 +175,7 @@ public class WorkflowRequestServiceImpl implements WorkflowRequestService {
         // 4. Log request creation
         WorkflowRequestLog log = new WorkflowRequestLog();
         log.setWorkflowRequest(request);
-        log.setEventType("REQUEST_CREATED");
+        log.setEventType("REQUEST_CREATE");
         log.setEventByUser(currentUser);
         log.setEventAt(ZonedDateTime.now());
         log.setDetailsJson(workflowRequestDTO.getPayloadJson());
