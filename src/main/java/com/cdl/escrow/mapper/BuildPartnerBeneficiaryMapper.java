@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring" , uses = { ApplicationSettingMapper.class, BuildPartnerMapper.class})
 public interface BuildPartnerBeneficiaryMapper extends EntityMapper<BuildPartnerBeneficiaryDTO, BuildPartnerBeneficiary> {
 
     @Mapping(source = "bpbTransferType", target = "bpbTransferTypeDTO")
