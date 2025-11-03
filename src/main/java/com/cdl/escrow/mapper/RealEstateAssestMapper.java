@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 
-@Mapper(componentModel = "spring" , uses = { ApplicationSettingMapper.class})
+@Mapper(componentModel = "spring" , uses = { ApplicationSettingMapper.class, BuildPartnerMapper.class})
 public interface RealEstateAssestMapper  extends EntityMapper<RealEstateAssestDTO, RealEstateAssest> {
 
     @Mapping(source = "reaStatus", target = "reaStatusDTO")

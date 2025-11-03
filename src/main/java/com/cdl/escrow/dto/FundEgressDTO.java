@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Map;
 
@@ -29,6 +30,22 @@ public class FundEgressDTO implements Serializable {
     private String feUnitRegistrationFee;
 
     private String feRemark;
+
+    private String escrowAccountNumber;
+
+    private BigDecimal escrowAccBalance;
+
+    private String constructionAccountNumber;
+
+    private BigDecimal constructionAccBalance;
+
+    private String corporateAccountNumber;
+
+    private BigDecimal corporateAccBalance;
+
+    private String retentionAccountNumber;
+
+    private BigDecimal retentionAccBalance;
 
     Map<String, Object> feResponseObject;
 
@@ -191,6 +208,8 @@ public class FundEgressDTO implements Serializable {
     private Boolean enabled ;
 
     private Double feCorporateAmount;
+
+    private ZonedDateTime fePaymentExecutionDate;
 
    private ApplicationSettingDTO paymentStatusOptionDTO;
 

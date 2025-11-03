@@ -7,7 +7,8 @@ import com.cdl.escrow.helper.EntityMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring" , uses = { ApplicationSettingMapper.class })
+@Mapper(componentModel = "spring" , uses = { ApplicationSettingMapper.class, RealEstateAssestMapper.class,
+BuildPartnerMapper.class,CapitalPartnerMapper.class})
 public interface FundEgressMapper  extends EntityMapper<FundEgressDTO, FundEgress> {
 
     @Mapping(source = "paymentStatusOption", target = "paymentStatusOptionDTO")

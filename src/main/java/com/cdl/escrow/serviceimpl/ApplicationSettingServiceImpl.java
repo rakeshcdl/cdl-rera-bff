@@ -93,10 +93,15 @@ public class ApplicationSettingServiceImpl implements ApplicationSettingService 
     @Override
     @Transactional
     public boolean softApplicationSettingById(Long id) {
-        return repository.findByIdAndDeletedFalse(id).map(entity -> {
-            entity.setDeleted(true);
-            repository.save(entity);
-            return true;
-        }).orElse(false);
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ApplicationConfigurationNotFoundException.ResourceNotFoundException("Entity not found: " + id));
+
+        if (Boolean.TRUE.equals(entity.getDeleted())) {
+            throw new ApplicationConfigurationNotFoundException.ConflictException("Entity already deleted: " + id);
+        }
+
+        entity.setDeleted(true);
+        repository.save(entity);
+        return true;
     }
 }

@@ -121,6 +121,7 @@ public class AppLanguageTranslationServiceImpl implements AppLanguageTranslation
         return mapper.toDtoList(appLanguageTranslationList);
     }
 
+    //BUILD_PARTNER_ASSET
     @Override
     @Transactional
     public List<AppLanguageTranslationDTO> getBuildPartnerAssestAppLanguageTranslationData() {

@@ -94,14 +94,15 @@ public class BuildPartnerContactServiceImpl implements BuildPartnerContactServic
     @Override
     @Transactional
     public boolean softBuildPartnerContactServiceById(Long id) {
-        return repository.findByIdAndDeletedFalse(id).map(entity -> {
-            // treat null as false
-            if (Boolean.FALSE.equals(entity.getDeleted()) || entity.getDeleted() == null) {
-                entity.setDeleted(true);
-                repository.save(entity);
-                return true;
-            }
-            return false;
-        }).orElse(false);
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ApplicationConfigurationNotFoundException.ResourceNotFoundException("Entity not found: " + id));
+
+        if (Boolean.TRUE.equals(entity.getDeleted())) {
+            throw new ApplicationConfigurationNotFoundException.ConflictException("Entity already deleted: " + id);
+        }
+
+        entity.setDeleted(true);
+        repository.save(entity);
+        return true;
     }
 }

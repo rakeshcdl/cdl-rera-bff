@@ -12,6 +12,7 @@ import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
@@ -74,6 +75,24 @@ public class FundEgress implements Serializable {
     private String feRtZeroThree;
 
     private String feEngineerRefNo;
+
+    private String escrowAccountNumber;
+
+    private BigDecimal escrowAccBalance;
+
+    private String constructionAccountNumber;
+
+    private BigDecimal constructionAccBalance;
+
+    private String corporateAccountNumber;
+
+    private BigDecimal corporateAccBalance;
+
+    private String retentionAccountNumber;
+
+    private BigDecimal retentionAccBalance;
+
+
 
     private ZonedDateTime feEngineerApprovalDate;
 
@@ -226,6 +245,9 @@ public class FundEgress implements Serializable {
     private Double feBalanceAmount;
 
     private Boolean feDocVerified;
+
+    private ZonedDateTime fePaymentExecutionDate;
+
 
    /* @Lob
     @Column(name = "fe_payment_body_obj", columnDefinition = "TEXT")
