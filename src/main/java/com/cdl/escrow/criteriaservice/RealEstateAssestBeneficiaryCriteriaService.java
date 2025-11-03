@@ -62,7 +62,8 @@ public class RealEstateAssestBeneficiaryCriteriaService  extends BaseSpecificati
               //  addLongFilter(cb, root, predicates, "reabInfrastructureCategoryId", criteria.getReabInfrastructureCategoryId());
              //   addLongFilter(cb, root, predicates, "reabSalesCategoryId", criteria.getReabSalesCategoryId());
 
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // Filter by CapitalPartner id -> join the capitalPartners collection
 
                 if (criteria.getRealEstateAssestId() != null) {

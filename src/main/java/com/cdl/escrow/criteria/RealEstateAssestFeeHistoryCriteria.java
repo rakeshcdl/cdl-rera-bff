@@ -53,4 +53,8 @@ public class RealEstateAssestFeeHistoryCriteria implements Serializable {
     private LongFilter capitalPartnerUnitId;
 
     private LongFilter fundEgressId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

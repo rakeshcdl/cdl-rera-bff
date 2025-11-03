@@ -45,7 +45,8 @@ public class CapitalPartnerBankInfoCriteriaService extends BaseSpecificationBuil
                // addLongFilter(cb, root, predicates, "bankAccountId", criteria.getBankAccountId());
                 //addLongFilter(cb, root, predicates, "capitalPartnerId", criteria.getCapitalPartnerId());
                 //addLongFilter(cb, root, predicates, "payModeId", criteria.getPayModeId());
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // Relation Join
                 if (criteria.getCapitalPartnerId() != null) {
                     addLongFilterForJoin(cb, root, predicates, "capitalPartner", "id", criteria.getCapitalPartnerId());

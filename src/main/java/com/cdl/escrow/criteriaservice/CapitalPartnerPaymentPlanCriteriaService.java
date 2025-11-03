@@ -36,6 +36,9 @@ public class CapitalPartnerPaymentPlanCriteriaService extends BaseSpecificationB
             if (criteria != null) {
                 addLongFilter(cb, root, predicates, "id", criteria.getId());
 
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
+
                 if (criteria.getCapitalPartnerId() != null) {
                     addLongFilterForJoin(cb, root, predicates, "capitalPartner", "id", criteria.getCapitalPartnerId());
                 }

@@ -52,6 +52,9 @@ public class RealEstateAssestFinancialSummaryCriteriaService extends BaseSpecifi
                 addZonedDateTimeFilter(cb, root, predicates, "reafsActualDate", criteria.getReafsActualDate());
                 addStringFilter(cb, root, predicates, "reafsActualexceptCapVal", criteria.getReafsActualexceptCapVal(), true);
 
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
+
                 if (criteria.getRealEstateAssestId() != null) {
                     addLongFilterForJoin(cb, root, predicates, "realEstateAssest", "id", criteria.getRealEstateAssestId());
                 }

@@ -80,4 +80,8 @@ public class CapitalPartnerUnitPurchaseCriteria implements Serializable {
     private LongFilter cpuPurchasePriceCurrencyId;
 
     private LongFilter capitalPartnerUnitId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

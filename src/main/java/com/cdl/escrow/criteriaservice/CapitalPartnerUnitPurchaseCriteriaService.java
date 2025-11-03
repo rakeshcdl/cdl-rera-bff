@@ -80,6 +80,9 @@ public class CapitalPartnerUnitPurchaseCriteriaService extends BaseSpecification
                 addBooleanFilter(cb, root, predicates, "cpupProjectPaymentPlan", criteria.getCpupProjectPaymentPlan());
                 addBooleanFilter(cb, root, predicates, "cpupReservationBookingForm", criteria.getCpupReservationBookingForm());
 
+
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // Relation Join
                 if (criteria.getCapitalPartnerUnitId() != null) {
                     addLongFilterForJoin(cb, root, predicates, "capitalPartnerUnit", "id", criteria.getCapitalPartnerUnitId());

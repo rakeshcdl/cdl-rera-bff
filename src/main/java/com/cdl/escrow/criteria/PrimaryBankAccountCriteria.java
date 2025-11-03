@@ -1,5 +1,6 @@
 package com.cdl.escrow.criteria;
 
+import com.cdl.escrow.filter.BooleanFilter;
 import com.cdl.escrow.filter.DoubleFilter;
 import com.cdl.escrow.filter.LongFilter;
 import com.cdl.escrow.filter.StringFilter;
@@ -28,4 +29,8 @@ public class PrimaryBankAccountCriteria implements Serializable {
     //private Set<SecondaryBankAccountDTO> secondaryBankAccountsDTO ;
 
     //private Set<BankAccountDTO> bankAccountDTOS ;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

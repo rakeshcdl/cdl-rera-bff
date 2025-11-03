@@ -51,6 +51,7 @@ public class BuildPartnerFeesCriteriaService extends BaseSpecificationBuilder<Bu
                 }
 
                 // Boolean enabled
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
                 addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
 
                 // Enum or direct equals

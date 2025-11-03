@@ -1,6 +1,7 @@
 package com.cdl.escrow.criteria;
 
 import com.cdl.escrow.enumeration.WorkflowStatus;
+import com.cdl.escrow.filter.BooleanFilter;
 import com.cdl.escrow.filter.LongFilter;
 import com.cdl.escrow.filter.StringFilter;
 import lombok.*;
@@ -38,4 +39,8 @@ public class BuildPartnerContactCriteria implements Serializable {
     private WorkflowStatus workflowStatus;
 
     private LongFilter buildPartnerId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

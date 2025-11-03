@@ -42,4 +42,8 @@ public class RealEstateAssestFeeCriteria implements Serializable {
     private LongFilter reafAccountTypeId;
 
     //private Set<RealEstateAssestFeeHistoryDTO> realEstateAssestFeeHistoryDTOS ;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

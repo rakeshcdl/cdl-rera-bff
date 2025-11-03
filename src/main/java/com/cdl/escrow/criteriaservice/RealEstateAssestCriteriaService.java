@@ -77,7 +77,8 @@ public class RealEstateAssestCriteriaService extends BaseSpecificationBuilder<Re
                 //realEstateAssest
 
 
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
 
 
                 if (criteria.getBuildPartnerId() != null) {

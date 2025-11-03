@@ -1,9 +1,6 @@
 package com.cdl.escrow.criteria;
 
-import com.cdl.escrow.filter.DoubleFilter;
-import com.cdl.escrow.filter.IntegerFilter;
-import com.cdl.escrow.filter.LongFilter;
-import com.cdl.escrow.filter.ZonedDateTimeFilter;
+import com.cdl.escrow.filter.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -25,4 +22,8 @@ public class CapitalPartnerPaymentPlanCriteria implements Serializable {
     private DoubleFilter cpppBookingAmount;
 
     private LongFilter capitalPartnerId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

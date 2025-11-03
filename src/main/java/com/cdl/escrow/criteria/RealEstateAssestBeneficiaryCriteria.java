@@ -62,4 +62,8 @@ public class RealEstateAssestBeneficiaryCriteria implements Serializable {
    // private Set<BankAccount> bankAccountDTOS ;
 
    // private Set<FundEgress> fundEgressDTOS;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

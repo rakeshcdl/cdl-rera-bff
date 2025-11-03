@@ -1,5 +1,6 @@
 package com.cdl.escrow.criteria;
 
+import com.cdl.escrow.filter.BooleanFilter;
 import com.cdl.escrow.filter.DoubleFilter;
 import com.cdl.escrow.filter.LongFilter;
 import com.cdl.escrow.filter.StringFilter;
@@ -33,4 +34,8 @@ public class CapitalPartnerUnitBookingCriteria implements Serializable {
     private LongFilter capitalPartnerUnitId ;
 
    // private Set<CapitalPartnerUnitDTO> capitalPartnerUnitDTOS ;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

@@ -66,7 +66,8 @@ public class CapitalPartnerUnitCriteriaService extends BaseSpecificationBuilder<
                 // Boolean filters
                 addBooleanFilter(cb, root, predicates, "isResale", criteria.getIsResale());
                 addBooleanFilter(cb, root, predicates, "isModified", criteria.getIsModified());
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // ZonedDateTime filters
                 addZonedDateTimeFilter(cb, root, predicates, "resaleDate", criteria.getResaleDate());
 

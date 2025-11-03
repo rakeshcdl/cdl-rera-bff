@@ -51,6 +51,7 @@ public class BankAccountCriteriaService extends BaseSpecificationBuilder<BankAcc
 
             }
 
+
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

@@ -46,6 +46,8 @@ public class BuildPartnerContactCriteriaService extends BaseSpecificationBuilder
                 addStringFilter(cb, root, predicates, "bpcCcontactPoBox", criteria.getBpcCcontactPoBox(), false);
                 addStringFilter(cb, root, predicates, "bpcCcontactFaxNo", criteria.getBpcCcontactFaxNo(), false);
 
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // Enum or direct equals
                 if (criteria.getWorkflowStatus() != null) {
                     predicates.add(cb.equal(root.get("workflowStatus"), criteria.getWorkflowStatus()));

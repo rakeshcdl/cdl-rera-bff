@@ -38,6 +38,9 @@ public class SuretyBondReleaseCriteriaService  extends BaseSpecificationBuilder<
                 addLongFilter(cb, root, predicates, "id", criteria.getId());
                 addZonedDateTimeFilter(cb, root, predicates, "suretyBondReleaseRequestDate", criteria.getSuretyBondReleaseRequestDate());
                 addLongFilter(cb, root, predicates, "suretyBondId", criteria.getSuretyBondId());
+
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

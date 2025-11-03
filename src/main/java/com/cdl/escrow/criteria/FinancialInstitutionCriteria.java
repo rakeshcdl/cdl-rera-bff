@@ -1,9 +1,6 @@
 package com.cdl.escrow.criteria;
 
-import com.cdl.escrow.filter.DoubleFilter;
-import com.cdl.escrow.filter.LongFilter;
-import com.cdl.escrow.filter.StringFilter;
-import com.cdl.escrow.filter.ZonedDateTimeFilter;
+import com.cdl.escrow.filter.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -41,6 +38,10 @@ public class FinancialInstitutionCriteria implements Serializable {
     private StringFilter fiRoutingCode;
 
     private StringFilter fiSchemeType;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 
    // private Set<BankBranchDTO> branchDTOS;
 

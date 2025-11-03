@@ -47,12 +47,14 @@ public class BuildPartnerAccountCriteriaService extends BaseSpecificationBuilder
                 addZonedDateTimeFilter(cb, root, predicates, "createdAt", criteria.getCreatedAt());
                 addZonedDateTimeFilter(cb, root, predicates, "updatedAt", criteria.getUpdatedAt());
 
+
                 // WorkflowStatus enum
                 if (criteria.getStatus() != null) {
                     predicates.add(cb.equal(root.get("workflowStatus"), criteria.getStatus()));
                 }
 
                 // Boolean enabled
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
                 addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
 
                 // Enum or direct equals

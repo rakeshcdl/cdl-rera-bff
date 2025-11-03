@@ -36,4 +36,8 @@ public class CapitalPartnerUnitTypeCriteria implements Serializable {
     //private Set<CapitalPartnerUnitTypeDTO> capitalPartnerChildrenUnitTypeDTOS ;
 
     //private Set<CapitalPartnerUnitDTO> capitalPartnerUnitDTOS;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

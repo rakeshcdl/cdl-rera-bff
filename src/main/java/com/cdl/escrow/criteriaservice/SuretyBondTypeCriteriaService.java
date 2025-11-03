@@ -39,6 +39,9 @@ public class SuretyBondTypeCriteriaService  extends BaseSpecificationBuilder<Sur
                 addStringFilter(cb, root, predicates, "suretyBondTypeLabelId", criteria.getSuretyBondTypeLabelId(), true);
                 addStringFilter(cb, root, predicates, "suretyBondTypeId", criteria.getSuretyBondTypeId(), true);
                 addStringFilter(cb, root, predicates, "suretyBondTypeFetchUrl", criteria.getSuretyBondTypeFetchUrl(), true);
+
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

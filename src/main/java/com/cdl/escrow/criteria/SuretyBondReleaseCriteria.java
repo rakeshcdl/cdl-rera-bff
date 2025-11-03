@@ -1,5 +1,6 @@
 package com.cdl.escrow.criteria;
 
+import com.cdl.escrow.filter.BooleanFilter;
 import com.cdl.escrow.filter.LongFilter;
 import com.cdl.escrow.filter.ZonedDateTimeFilter;
 import lombok.*;
@@ -18,4 +19,8 @@ public class SuretyBondReleaseCriteria implements Serializable {
     private ZonedDateTimeFilter suretyBondReleaseRequestDate;
 
     private LongFilter suretyBondId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

@@ -53,7 +53,8 @@ public class CapitalPartnerUnitBookingCriteriaService extends BaseSpecificationB
 
                 // String filters
                 addStringFilter(cb, root, predicates, "cpubRemarks", criteria.getCpubRemarks(), true);
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // Filter by CapitalPartner id -> join the capitalPartners collection
                 if (criteria.getCapitalPartnerUnitId() != null) {
                     Join<CapitalPartnerUnitBooking, CapitalPartnerUnit> join = root.join("capitalPartnerUnits", JoinType.LEFT);

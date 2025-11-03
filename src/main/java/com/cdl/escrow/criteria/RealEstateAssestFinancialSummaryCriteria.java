@@ -2,10 +2,7 @@ package com.cdl.escrow.criteria;
 
 import com.cdl.escrow.dto.BuildPartnerDTO;
 import com.cdl.escrow.dto.RealEstateAssestDTO;
-import com.cdl.escrow.filter.DoubleFilter;
-import com.cdl.escrow.filter.LongFilter;
-import com.cdl.escrow.filter.StringFilter;
-import com.cdl.escrow.filter.ZonedDateTimeFilter;
+import com.cdl.escrow.filter.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -304,4 +301,8 @@ public class RealEstateAssestFinancialSummaryCriteria implements Serializable {
     private LongFilter buildPartnerId;
 
     private LongFilter realEstateAssestId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

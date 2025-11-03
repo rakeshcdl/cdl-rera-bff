@@ -1,5 +1,6 @@
 package com.cdl.escrow.criteria;
 
+import com.cdl.escrow.filter.BooleanFilter;
 import com.cdl.escrow.filter.DoubleFilter;
 import com.cdl.escrow.filter.LongFilter;
 import lombok.*;
@@ -20,4 +21,8 @@ public class SuretyBondRecoveryCriteria implements Serializable {
     private DoubleFilter suretyBondRecoveryBalanceAmount;
 
     private LongFilter suretyBondId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

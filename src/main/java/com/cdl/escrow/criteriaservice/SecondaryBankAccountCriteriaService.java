@@ -41,6 +41,9 @@ public class SecondaryBankAccountCriteriaService extends BaseSpecificationBuilde
                 addStringFilter(cb, root, predicates, "sbLabelId", criteria.getSbLabelId(), true);
                 addStringFilter(cb, root, predicates, "sbTypeId", criteria.getSbTypeId(), true);
                 addLongFilter(cb, root, predicates, "primaryBankAccountId", criteria.getPrimaryBankAccountId());
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
+
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

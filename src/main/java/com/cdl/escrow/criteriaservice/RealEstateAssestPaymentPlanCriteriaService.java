@@ -36,7 +36,8 @@ public class RealEstateAssestPaymentPlanCriteriaService  extends BaseSpecificati
             if(criteria!=null) {
                 addLongFilter(cb, root, predicates, "id", criteria.getId());
 
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // Relation Join
                 if (criteria.getRealEstateAssestId() != null) {
                     addLongFilterForJoin(cb, root, predicates, "realEstateAssest", "id", criteria.getRealEstateAssestId());

@@ -48,6 +48,8 @@ public class BuildPartnerBeneficiaryCriteriaService extends BaseSpecificationBui
                 addBooleanFilter(cb, root, predicates, "bpbIsActive", criteria.getBpbIsActive());
                 addBooleanFilter(cb, root, predicates, "bpbIsDeleted", criteria.getBpbIsDeleted());
 
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // Relation Join
                 if (criteria.getBpbTranferTypeId() != null) {
                     addLongFilterForJoin(cb, root, predicates, "bpbTransferType", "id", criteria.getBpbTranferTypeId());

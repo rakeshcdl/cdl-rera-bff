@@ -55,6 +55,9 @@ public class RealEstateAssestFeeHistoryCriteriaService extends BaseSpecification
                 addLongFilter(cb, root, predicates, "realEstateAssestId", criteria.getRealEstateAssestId());
                 addLongFilter(cb, root, predicates, "capitalPartnerUnitId", criteria.getCapitalPartnerUnitId());
                 addLongFilter(cb, root, predicates, "fundEgressId", criteria.getFundEgressId());
+
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
             }
             return cb.and(predicates.toArray(new Predicate[0]));
         };

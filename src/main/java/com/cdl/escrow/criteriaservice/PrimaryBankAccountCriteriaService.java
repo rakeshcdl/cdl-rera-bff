@@ -40,6 +40,9 @@ public class PrimaryBankAccountCriteriaService   extends BaseSpecificationBuilde
                 addDoubleFilter(cb, root, predicates, "pbBalance", criteria.getPbBalance());
                 addStringFilter(cb, root, predicates, "pbLabelId", criteria.getPbLabelId(), true);
                 addStringFilter(cb, root, predicates, "pbTypeId", criteria.getPbTypeId(), true);
+
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
             }
             return cb.and(predicates.toArray(new Predicate[0]));
         };

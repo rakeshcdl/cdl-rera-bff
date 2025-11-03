@@ -49,6 +49,8 @@ public class CapitalPartnerUnitTypeCriteriaService extends BaseSpecificationBuil
 
                 // Boolean Filters
                 addBooleanFilter(cb, root, predicates, "cputIsStandalone", criteria.getCputIsStandalone());
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
             }
             return cb.and(predicates.toArray(new Predicate[0]));
         };

@@ -31,4 +31,6 @@ public class RealEstateBankAccountCriteria implements Serializable {
     private WorkflowStatus status;
     private BooleanFilter enabled;
    private LongFilter realEstateAssestId;
+
+    private BooleanFilter deleted;
 }

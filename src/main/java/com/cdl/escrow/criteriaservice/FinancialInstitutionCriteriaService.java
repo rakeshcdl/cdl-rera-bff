@@ -49,7 +49,8 @@ public class FinancialInstitutionCriteriaService extends BaseSpecificationBuilde
                 addStringFilter(cb,root,predicates,"fiRoutingCode", criteria.getFiRoutingCode(), true);
                 addStringFilter(cb,root,predicates,"fiSchemeType", criteria.getFiSchemeType(), true);
                 addZonedDateTimeFilter(cb,root,predicates, "fiOpeningDate", criteria.getFiOpeningDate());
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

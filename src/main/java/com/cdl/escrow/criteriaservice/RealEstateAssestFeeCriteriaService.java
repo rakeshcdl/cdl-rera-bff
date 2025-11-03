@@ -47,7 +47,8 @@ public class RealEstateAssestFeeCriteriaService extends BaseSpecificationBuilder
                 addZonedDateTimeFilter(cb, root, predicates, "reafNextRecoveryDate", criteria.getReafNextRecoveryDate());
                 addDoubleFilter(cb, root, predicates, "reafVatPercentage", criteria.getReafVatPercentage());
                 addBooleanFilter(cb, root, predicates, "reafCollected", criteria.getReafCollected());
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
 
                 // Relation Join
 

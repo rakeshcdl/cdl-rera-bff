@@ -33,5 +33,9 @@ public class BuildPartnerBeneficiaryCriteria implements Serializable {
 
     private LongFilter buildPartnerId;
 
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
+
 
 }

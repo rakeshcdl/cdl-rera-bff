@@ -48,6 +48,9 @@ public class RealEstateBankAccountCriteriaService extends BaseSpecificationBuild
                 addZonedDateTimeFilter(cb, root, predicates, "createdAt", criteria.getCreatedAt());
                 addZonedDateTimeFilter(cb, root, predicates, "updatedAt", criteria.getUpdatedAt());
 
+
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 // WorkflowStatus enum
                 if (criteria.getStatus() != null) {
                     predicates.add(cb.equal(root.get("status"), criteria.getStatus()));

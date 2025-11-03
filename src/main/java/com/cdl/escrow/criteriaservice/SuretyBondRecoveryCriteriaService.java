@@ -39,6 +39,9 @@ public class SuretyBondRecoveryCriteriaService extends BaseSpecificationBuilder<
                 addDoubleFilter(cb, root, predicates, "suretyBondRecoveryReductionAmount", criteria.getSuretyBondRecoveryReductionAmount());
                 addDoubleFilter(cb, root, predicates, "suretyBondRecoveryBalanceAmount", criteria.getSuretyBondRecoveryBalanceAmount());
                 addLongFilter(cb, root, predicates, "suretyBondId", criteria.getSuretyBondId());
+
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

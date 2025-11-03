@@ -1,5 +1,6 @@
 package com.cdl.escrow.criteria;
 
+import com.cdl.escrow.filter.BooleanFilter;
 import com.cdl.escrow.filter.LongFilter;
 import com.cdl.escrow.filter.StringFilter;
 import lombok.*;
@@ -33,4 +34,8 @@ public class CapitalPartnerBankInfoCriteria implements Serializable {
     private LongFilter capitalPartnerId;
 
     private LongFilter payModeId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

@@ -50,4 +50,6 @@ public class BuildPartnerFeesCriteria implements Serializable {
     private BooleanFilter enabled ;
 
     private LongFilter buildPartnerId;
+
+    private BooleanFilter deleted;
 }

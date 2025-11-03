@@ -1,5 +1,6 @@
 package com.cdl.escrow.criteria;
 
+import com.cdl.escrow.filter.BooleanFilter;
 import com.cdl.escrow.filter.DoubleFilter;
 import com.cdl.escrow.filter.LongFilter;
 import lombok.*;
@@ -25,4 +26,8 @@ public class RealEstateAssestClosureCriteria implements Serializable {
     private LongFilter realEstateAssestId;
 
     private LongFilter reacDocumentId;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

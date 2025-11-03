@@ -76,4 +76,8 @@ public class CapitalPartnerUnitCriteria implements Serializable {
     //private Set<FundEgressDTO> fundEgressDTOS;
 
     //private Set<FundEgressDTO> transferFundEgressDTO;
+
+    private BooleanFilter enabled ;
+
+    private BooleanFilter deleted;
 }

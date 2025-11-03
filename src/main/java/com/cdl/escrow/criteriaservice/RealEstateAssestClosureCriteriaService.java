@@ -47,7 +47,8 @@ public class RealEstateAssestClosureCriteriaService  extends BaseSpecificationBu
                 //addLongFilter(cb, root, predicates, "realEstateAssestId", criteria.getRealEstateAssestId());
                // addLongFilter(cb, root, predicates, "reacDocumentId", criteria.getReacDocumentId());
 
-
+                addBooleanFilter(cb, root, predicates, "deleted", criteria.getDeleted());
+                addBooleanFilter(cb, root, predicates, "enabled", criteria.getEnabled());
                 if (criteria.getRealEstateAssestId() != null) {
                     Join<RealEstateAssestClosure, RealEstateAssest> join = root.join("realEstateAssest", JoinType.LEFT);
                     addLongFilterOnJoin(cb, join, predicates, "id", criteria.getRealEstateAssestId());

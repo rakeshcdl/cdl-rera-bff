@@ -30,4 +30,6 @@ public class BuildPartnerAccountCriteria implements Serializable {
     private WorkflowStatus status;
     private BooleanFilter enabled;
     private LongFilter buildPartnerId;
+
+    private BooleanFilter deleted;
 }
