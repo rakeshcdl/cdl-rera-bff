@@ -11,7 +11,9 @@
 package com.cdl.escrow.serviceimpl;
 
 import com.cdl.escrow.dto.keycloakdto.*;
+import com.cdl.escrow.exception.ApplicationConfigurationNotFoundException;
 import com.cdl.escrow.service.AuthAdminRoleService;
+import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,21 +74,43 @@ public class AuthAdminRoleServiceImpl implements AuthAdminRoleService {
 
     @Override
     @Transactional
-    public void update(String roleName,String updateRoleName) throws Exception {
+    public void update(String roleName, String updateRoleName) {
         RealmResource realm = keycloak.realm(REALM_NAME);
+        RolesResource rolesResource = realm.roles();
 
-        RolesResource roleResource = realm.roles();
-
-        RoleResource roleData = roleResource.get(roleName);
-
-        RoleRepresentation roleRepresentation = roleData.toRepresentation();
-        roleRepresentation.setName(updateRoleName);
         try {
-            roleResource.get(roleName).update(roleData.toRepresentation());
-        } catch (Exception e) {
-            throw e;
+            // Get the role resource for the existing role name
+            RoleResource roleResource = rolesResource.get(roleName);
+
+            // Get the current representation
+            RoleRepresentation rep = roleResource.toRepresentation();
+            if (rep == null) {
+                throw new ApplicationConfigurationNotFoundException.ResourceNotFoundException("Role not found: " + roleName);
+            }
+
+            // Set new name
+            rep.setName(updateRoleName);
+
+            // Call update on the role resource (use the modified rep)
+            roleResource.update(rep);
+
+            // Optionally: verify update succeeded by fetching by new name
+            // Note: rolesResource.get(updateRoleName) may throw NotFoundException if update failed
+            // rolesResource.get(updateRoleName).toRepresentation();
+
+        } catch (NotFoundException nf) {
+            // Keycloak client throws NotFoundException when role not found
+            throw new ApplicationConfigurationNotFoundException.ResourceNotFoundException("Role not found: " + roleName);
+        } catch (ClientErrorException ce) {
+            // handle 4xx responses from keycloak admin client
+            log.error("Keycloak client error while updating role {}: {}", roleName, ce.getMessage());
+            throw new IllegalArgumentException("Invalid request to Keycloak: " + ce.getMessage());
+        } catch (Exception ex) {
+            log.error("Unexpected error updating role {} -> {}", roleName, updateRoleName, ex);
+            throw new RuntimeException("Failed to update role: " + ex.getMessage(), ex);
         }
     }
+
 
     @Override
     @Transactional(readOnly = true)

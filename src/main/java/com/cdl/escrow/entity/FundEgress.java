@@ -122,7 +122,7 @@ public class FundEgress implements Serializable {
 
     private Double feAmountInTransit;
 
-    private String feVarCapExcedded;
+    private String feVarCapExcedded; // Vat Cap Excedded
 
     private Double feIndicativeRate;
 

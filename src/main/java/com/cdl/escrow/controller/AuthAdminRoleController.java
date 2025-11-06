@@ -1,6 +1,7 @@
 package com.cdl.escrow.controller;
 
 import com.cdl.escrow.dto.keycloakdto.*;
+import com.cdl.escrow.exception.ApplicationConfigurationNotFoundException;
 import com.cdl.escrow.helper.PaginationUtil;
 import com.cdl.escrow.service.AuthAdminRoleService;
 import jakarta.validation.Valid;
@@ -41,19 +42,32 @@ public class AuthAdminRoleController {
     }
 
     @PutMapping("/auth/roles/{role_name}/{update_role_name}")
-    public ResponseEntity<Integer> updateRole(
-            @PathVariable(value = "role_name", required = false) final String roleName
-            , @PathVariable(value = "update_role_name", required = false) final String updatedRoleName
-    ) throws Exception {
-        log.debug("REST request to update Role : {}", roleName);
+    public ResponseEntity<Void> updateRole(
+            @PathVariable("role_name") String roleName,
+            @PathVariable("update_role_name") String updatedRoleName) {
+
+        log.debug("REST request to update Role : {} -> {}", roleName, updatedRoleName);
 
         try {
-            authAdminRoleService.update(roleName,updatedRoleName);
-            return ResponseEntity.ok().body(201);
+            authAdminRoleService.update(roleName, updatedRoleName);
+            // 204 No Content is appropriate for a successful update with no body
+            return ResponseEntity.noContent().build();
+        } catch (ApplicationConfigurationNotFoundException.ResourceNotFoundException rnfe) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("X-Error-Message", rnfe.getMessage())
+                    .build();
+        } catch (IllegalArgumentException iae) {
+            return ResponseEntity.badRequest()
+                    .header("X-Error-Message", iae.getMessage())
+                    .build();
         } catch (Exception e) {
-            throw new Exception("Role couldn't be updated");
+            log.error("Failed to update role", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .header("X-Error-Message", "Role update failed")
+                    .build();
         }
     }
+
 
     @GetMapping("/auth/roles")
     public ResponseEntity<List<RoleRepresentation>> getAllRoles(Pageable pageable) throws Exception {
