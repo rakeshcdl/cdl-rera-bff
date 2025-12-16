@@ -1,7 +1,6 @@
 package com.cdl.escrow.workflow.criteria;
 
 import com.cdl.escrow.filter.BooleanFilter;
-import com.cdl.escrow.filter.IntegerFilter;
 import com.cdl.escrow.filter.LongFilter;
 import com.cdl.escrow.filter.StringFilter;
 import lombok.*;
@@ -14,19 +13,19 @@ import java.io.Serializable;
 @ToString
 @Getter
 @Setter
-public class WorkflowAmountStageOverrideCriteria implements Serializable {
+public class WorkflowActionCriteria implements Serializable {
 
     private LongFilter id;
 
-    private IntegerFilter stageOrder;
+    private StringFilter actionKey;
 
-    private IntegerFilter requiredApprovals;
+    private StringFilter actionName;
 
-    private StringFilter keycloakGroup;
+    private StringFilter moduleCode;
 
-    private StringFilter stageKey;
+    private StringFilter description;
 
-    private LongFilter workflowAmountRuleId;
+    private StringFilter name;
 
     private BooleanFilter enabled ;
 

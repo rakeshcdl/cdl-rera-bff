@@ -1,6 +1,9 @@
 package com.cdl.escrow.workflow.controller;
 
 import com.cdl.escrow.exception.BadRequestAlertException;
+import com.cdl.escrow.helper.PaginationUtil;
+import com.cdl.escrow.workflow.criteria.WorkflowStageTemplateCriteria;
+import com.cdl.escrow.workflow.criteriaservice.WorkflowStageTemplateCriteriaService;
 import com.cdl.escrow.workflow.dto.WorkflowStageTemplateDTO;
 import com.cdl.escrow.workflow.repository.WorkflowStageTemplateRepository;
 import com.cdl.escrow.workflow.service.WorkflowStageTemplateService;
@@ -11,8 +14,10 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,13 +32,17 @@ public class WorkflowStageTemplateController {
 
     private final WorkflowStageTemplateRepository repository;
 
+    private final WorkflowStageTemplateCriteriaService workflowStageTemplateCriteriaService;
+
     private static final String ENTITY_NAME = "WORKFLOW-STAGE-TEMPLATE";
 
     @GetMapping
-    public ResponseEntity<List<WorkflowStageTemplateDTO>> getAllWorkflowStageTemplates() {
-        return  null;
+    public ResponseEntity<Page<WorkflowStageTemplateDTO>> getAllWorkflowStageTemplate(@ParameterObject WorkflowStageTemplateCriteria criteria,
+                                                                                    @ParameterObject  Pageable pageable) {
+        Page<WorkflowStageTemplateDTO> page = workflowStageTemplateCriteriaService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page);
     }
-
     @GetMapping("/find-all")
     public ResponseEntity<Page<WorkflowStageTemplateDTO>> getAllWorkflowStageTemplates(
             @ParameterObject @PageableDefault(size = 20) Pageable pageable) {

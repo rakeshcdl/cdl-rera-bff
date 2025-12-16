@@ -29,4 +29,8 @@ public class WorkflowStageTemplateDTO implements Serializable {
     private Integer slaHours;
 
     private WorkflowDefinitionDTO workflowDefinitionDTO;
+
+    private Boolean enabled ;
+
+    private Boolean deleted;
 }

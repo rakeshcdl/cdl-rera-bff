@@ -1,6 +1,9 @@
 package com.cdl.escrow.workflow.controller;
 
 import com.cdl.escrow.exception.BadRequestAlertException;
+import com.cdl.escrow.helper.PaginationUtil;
+import com.cdl.escrow.workflow.criteria.WorkflowAmountStageOverrideCriteria;
+import com.cdl.escrow.workflow.criteriaservice.WorkflowAmountStageOverrideCriteriaService;
 import com.cdl.escrow.workflow.dto.WorkflowAmountStageOverrideDTO;
 import com.cdl.escrow.workflow.repository.WorkflowAmountStageOverrideRepository;
 import com.cdl.escrow.workflow.service.WorkflowAmountStageOverrideService;
@@ -11,8 +14,10 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,13 +32,17 @@ public class WorkflowAmountStageOverrideController {
 
     private final WorkflowAmountStageOverrideRepository repository;
 
+    private final WorkflowAmountStageOverrideCriteriaService workflowAmountStageOverrideCriteriaService;
+
     private static final String ENTITY_NAME = "WORKFLOW-AMOUNT-STAGE-OVERRIDE";
 
     @GetMapping
-    public ResponseEntity<List<WorkflowAmountStageOverrideDTO>> getAllWorkflowAmountStageOverrides() {
-        return  null;
+    public ResponseEntity<Page<WorkflowAmountStageOverrideDTO>> getAllWorkflowAmountStageOverride(@ParameterObject WorkflowAmountStageOverrideCriteria criteria,
+                                                                                @ParameterObject  Pageable pageable) {
+        Page<WorkflowAmountStageOverrideDTO> page = workflowAmountStageOverrideCriteriaService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page);
     }
-
     @GetMapping("/find-all")
     public ResponseEntity<Page<WorkflowAmountStageOverrideDTO>> getAllWorkflowAmountStageOverrides(
             @ParameterObject @PageableDefault(size = 20) Pageable pageable) {

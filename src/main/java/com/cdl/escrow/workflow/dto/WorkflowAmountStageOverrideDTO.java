@@ -22,4 +22,8 @@ public class WorkflowAmountStageOverrideDTO implements Serializable {
     private String stageKey;
 
     private WorkflowAmountRuleDTO workflowAmountRuleDTO;
+
+    private Boolean enabled ;
+
+    private Boolean deleted;
 }

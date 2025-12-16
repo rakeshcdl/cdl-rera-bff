@@ -1,6 +1,9 @@
 package com.cdl.escrow.workflow.controller;
 
 import com.cdl.escrow.exception.BadRequestAlertException;
+import com.cdl.escrow.helper.PaginationUtil;
+import com.cdl.escrow.workflow.criteria.WorkflowAmountRuleCriteria;
+import com.cdl.escrow.workflow.criteriaservice.WorkflowAmountRuleCriteriaService;
 import com.cdl.escrow.workflow.dto.WorkflowAmountRuleDTO;
 import com.cdl.escrow.workflow.repository.WorkflowAmountRuleRepository;
 import com.cdl.escrow.workflow.service.WorkflowAmountRuleService;
@@ -11,8 +14,10 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,11 +33,16 @@ public class WorkflowAmountRuleController {
 
     private final WorkflowAmountRuleRepository workflowAmountRuleRepository;
 
+    private final WorkflowAmountRuleCriteriaService workflowAmountRuleCriteriaService;
+
     private static final String ENTITY_NAME = "WORKFLOW-AMOUNT-RULE";
 
     @GetMapping
-    public ResponseEntity<List<WorkflowAmountRuleDTO>> getAllWorkflowAmountRules() {
-        return  null;
+    public ResponseEntity<Page<WorkflowAmountRuleDTO>> getAllWorkflowAmountRule(@ParameterObject WorkflowAmountRuleCriteria criteria,
+                                                                        @ParameterObject  Pageable pageable) {
+        Page<WorkflowAmountRuleDTO> page = workflowAmountRuleCriteriaService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page);
     }
 
     @GetMapping("/find-all")

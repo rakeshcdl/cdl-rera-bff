@@ -241,4 +241,11 @@ public class AppLanguageTranslationController {
         List<AppLanguageTranslationDTO> page = appLanguageTranslationService.getDashboardTranslationData();
         return ResponseEntity.ok(page);
     }
+
+    @GetMapping("/workflow")
+    public ResponseEntity<List<AppLanguageTranslationDTO>> getWorkflowTranslationData() {
+        log.info("Fetching all app config translation of workflow");
+        List<AppLanguageTranslationDTO> page = appLanguageTranslationService.getWorkflowTranslationData();
+        return ResponseEntity.ok(page);
+    }
 }

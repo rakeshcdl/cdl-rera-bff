@@ -1,6 +1,9 @@
 package com.cdl.escrow.workflow.controller;
 
 import com.cdl.escrow.exception.BadRequestAlertException;
+import com.cdl.escrow.helper.PaginationUtil;
+import com.cdl.escrow.workflow.criteria.WorkflowActionCriteria;
+import com.cdl.escrow.workflow.criteriaservice.WorkflowActionCriteriaService;
 import com.cdl.escrow.workflow.dto.WorkflowActionDTO;
 import com.cdl.escrow.workflow.repository.WorkflowActionRepository;
 import com.cdl.escrow.workflow.service.WorkflowActionService;
@@ -13,8 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +35,16 @@ public class WorkflowActionController {
 
     private final WorkflowActionRepository repository;
 
+    private final WorkflowActionCriteriaService workflowActionCriteriaService;
+
     private static final String ENTITY_NAME = "WORKFLOW-ACTION";
 
     @GetMapping
-    public ResponseEntity<List<WorkflowActionDTO>> getAllWorkflowActions() {
-       return  null;
+    public ResponseEntity<Page<WorkflowActionDTO>> getAllWorkflowAction(@ParameterObject WorkflowActionCriteria criteria,
+                                                                           @ParameterObject  Pageable pageable) {
+        Page<WorkflowActionDTO> page = workflowActionCriteriaService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page);
     }
 
     @GetMapping("/find-all")

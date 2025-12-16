@@ -205,4 +205,10 @@ public class AppLanguageTranslationServiceImpl implements AppLanguageTranslation
         List<AppLanguageTranslation> appLanguageTranslationList = repository.findAllByModuleName("DASHBOARD");
         return mapper.toDtoList(appLanguageTranslationList);
     }
+
+    @Override
+    public List<AppLanguageTranslationDTO> getWorkflowTranslationData() {
+            List<AppLanguageTranslation> appLanguageTranslationList = repository.findAllByModuleName("WORKFLOW");
+        return mapper.toDtoList(appLanguageTranslationList);
+    }
 }

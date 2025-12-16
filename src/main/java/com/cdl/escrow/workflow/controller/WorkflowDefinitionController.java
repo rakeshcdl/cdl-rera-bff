@@ -3,6 +3,11 @@ package com.cdl.escrow.workflow.controller;
 import com.cdl.escrow.entity.ApplicationModule;
 import com.cdl.escrow.entity.WorkflowAction;
 import com.cdl.escrow.exception.BadRequestAlertException;
+import com.cdl.escrow.helper.PaginationUtil;
+import com.cdl.escrow.workflow.criteria.WorkflowAmountRuleCriteria;
+import com.cdl.escrow.workflow.criteria.WorkflowDefinitionCriteria;
+import com.cdl.escrow.workflow.criteriaservice.WorkflowDefinitionCriteriaCriteria;
+import com.cdl.escrow.workflow.dto.WorkflowAmountRuleDTO;
 import com.cdl.escrow.workflow.dto.WorkflowDefinitionDTO;
 import com.cdl.escrow.workflow.repository.WorkflowDefinitionRepository;
 import com.cdl.escrow.workflow.service.WorkflowDefinitionService;
@@ -15,8 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +39,17 @@ public class WorkflowDefinitionController {
 
     private final WorkflowDefinitionRepository repository;
 
+    private final WorkflowDefinitionCriteriaCriteria workflowDefinitionCriteriaCriteria;
+
     private static final String ENTITY_NAME = "WORKFLOW-DEFINITION";
 
     @GetMapping
-    public ResponseEntity<List<WorkflowDefinitionDTO>> getAllWorkflowDefinitions() {
-        return  null;
+    public ResponseEntity<Page<WorkflowDefinitionDTO>> getAllWorkflowDefinition(@ParameterObject WorkflowDefinitionCriteria criteria,
+                                                                                @ParameterObject  Pageable pageable) {
+        Page<WorkflowDefinitionDTO> page = workflowDefinitionCriteriaCriteria.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page);
     }
-
     @GetMapping("/find-all")
     public ResponseEntity<Page<WorkflowDefinitionDTO>> getAllWorkflowDefinitions(
             @ParameterObject @PageableDefault(size = 20) Pageable pageable) {

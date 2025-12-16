@@ -58,4 +58,6 @@ public interface AppLanguageTranslationService {
     List<AppLanguageTranslationDTO> getReportTranslationData();
 
     List<AppLanguageTranslationDTO> getDashboardTranslationData();
+
+    List<AppLanguageTranslationDTO> getWorkflowTranslationData();
 }

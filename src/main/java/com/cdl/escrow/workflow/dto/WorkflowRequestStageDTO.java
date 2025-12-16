@@ -41,4 +41,8 @@ public class WorkflowRequestStageDTO implements Serializable {
    private List<WorkflowRequestStageApprovalDTO> workflowRequestStageApprovalDTOS;
 
     private TaskStatusDTO taskStatusDTO;
+
+    private Boolean enabled ;
+
+    private Boolean deleted;
 }
